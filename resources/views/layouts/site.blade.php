@@ -23,8 +23,9 @@
         <li><a href="#payments">Payments</a></li>
         <li><a href="#privacy">Privacy</a></li>
         <li><a href="#delivery">Delivery</a></li>
-        <li><a href="">Your Question</a></li>
-        <li><a href="">Admin</a></li>
+<!--         <li><a href="">Your Question</a></li>
+        <li><a href="">Admin</a></li> -->
+
     </ul> <!-- cd-faq-categories -->
 
     <div class="cd-faq-items">
