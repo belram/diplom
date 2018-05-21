@@ -46,11 +46,20 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+
+    /**
+     * Добавил правило валидации для 'login' 'login' => 'required|string|max:255|unique:users, login',
+     *
+     * изменил 'email' => 'required|string|email|max:255|unique:users',
+     * 
+     */
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'login' => 'required|string|max:255|unique:users, login',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -61,10 +70,17 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+
+    /**
+     * Добавил 'login' => $data['login'],
+     *
+     */
+
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
+            'login' => $data['login'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
