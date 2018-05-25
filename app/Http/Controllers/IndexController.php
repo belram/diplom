@@ -88,14 +88,12 @@ class IndexController extends Controller
                 return redirect()->route('add_question')->withErrors($validator)->withInput();
             }
 
-            $empty_place = Question::where([['topic', $data['topic']], ['question', NULL]])->first();
-
-            if ($empty_place) {
+            if ($empty_place = Question::where([['topic', $data['topic']], ['question', NULL]])->first()) {
                 $empty_place->question = $data['question'];
                 $empty_place->author_question = $data['name'];
                 $empty_place->author_email = $data['email'];
                 $empty_place->status = 1;
-                $empty_place->answer_created_at = date('Y-m-d H:i:s');
+                $empty_place->question_created_at = date('Y-m-d H:i:s');
 
                 if ($empty_place->save()) {
                     return redirect()->route('index')->with('status', 'Ваш вопрос добавлен!');
@@ -109,6 +107,7 @@ class IndexController extends Controller
                         'question' => $data['question'],
                         'author_question' => $data['name'],
                         'author_email' => $data['email'],
+                        'question_created_at' => date('Y-m-d H:i:s'),
                         'status' => 1
                         ]);
 
