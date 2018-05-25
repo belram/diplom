@@ -16,7 +16,7 @@
 	    </div>
 	@endif
 
-	<form method="POST" action="{{ route('add_question') }}">
+	<form method="POST" action="{{ route('store') }}">
 
 		@csrf
 
@@ -36,7 +36,7 @@
 		<input type="submit" name="save">
 		<br>
 		<br>
-		<a style="font-size: 20px; font-weight: bold; color: blue" href="{{ route('home') }}">Back</a>
+		<a style="font-size: 20px; font-weight: bold; color: blue" href="{{ route('index') }}">Back</a>
 		
 
 	</form>

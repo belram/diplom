@@ -51,18 +51,14 @@ class AnswerController extends Controller
 
 		}
 
-		if (view()->exists('site.answer')) {
+
+		$question = [];
+		$question['question'] = Question::where('id', "$topic")->value('question');
+		$question['question_id'] = $topic;
+
+		return view('site.answer', compact('question'));
 
 
-			$question = [];
-			$question['question'] = Question::where('id', "$topic")->value('question');
-			$question['question_id'] = $topic;
-
-			return view('site.answer', ['question' => $question]);
-
-		} else {
-			abort(404);
-		}
 
 	}
     

@@ -43,13 +43,7 @@ class TopicsAddController extends Controller
 
 		}		
 
-		if (view()->exists('site.topics_add')) {
-
-    		return view('site.topics_add');
-
-		} else {
-			abort(404);
-		}
+    	return view('site.topics_add');
 
 	}
 

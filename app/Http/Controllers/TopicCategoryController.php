@@ -57,33 +57,29 @@ class TopicCategoryController extends Controller
 
 		}
 
-    	if (view()->exists('site.category')) {
-
-    		$data = Question::where([['topic', "$topic"], ['status', '>', 0]])->get()->toArray();
-
-            foreach ($data as $key => $value) {
-                if (is_null( $value['answer'])) {
-                    $data[$key]['answer'] = '';
-                    $data[$key]['status'] = 'No answer';
-                    $data[$key]['change_status'] = 'Answer';
-                }
-
-                if ( $value['status'] == 2) {
-                    $data[$key]['status'] = 'Published';
-                    $data[$key]['change_status'] = 'Hide';
-                } elseif ( $value['status'] == 3) {
-                    $data[$key]['status'] = 'Hidden';
-                    $data[$key]['change_status'] = 'Public';
-                }
 
 
+		$data = Question::where([['topic', "$topic"], ['status', '>', 0]])->get()->toArray();
+
+        foreach ($data as $key => $value) {
+            if (is_null( $value['answer'])) {
+                $data[$key]['answer'] = '';
+                $data[$key]['status'] = 'No answer';
+                $data[$key]['change_status'] = 'Answer';
             }
 
-    		return view('site.category', ['data' => $data]);
+            if ( $value['status'] == 2) {
+                $data[$key]['status'] = 'Published';
+                $data[$key]['change_status'] = 'Hide';
+            } elseif ( $value['status'] == 3) {
+                $data[$key]['status'] = 'Hidden';
+                $data[$key]['change_status'] = 'Public';
+            }
 
-		} else {
-			abort(404);
-		}
+
+        }
+
+		return view('site.category', compact('data'));
 
     }
 }

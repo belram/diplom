@@ -11,21 +11,11 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 
-Route::group([], function() {
-	// blog.loc
-	Route::get('/',['uses'=>'IndexController@execute','as'=>'home']);
-	// blog.loc/add
-	Route::match(['get','post'],'/add',['uses'=>'AddQuestionController@add_question','as'=>'add_question']);
+
+Route::resource('/', 'IndexController', ['except' => ['show', 'edit', 'update', 'destroy']]);
 	
-	Route::auth();
-	
-});
-
 Auth::routes();
 
 Route::group(['prefix'=>'admin','middleware'=>['auth']], function() {
@@ -80,12 +70,18 @@ Route::group(['prefix'=>'admin','middleware'=>['auth']], function() {
 
 	Route::group(['prefix'=>'administrators'],function() {
 
-		Route::match(['get','post'],'/',['uses'=>'AdministratorsController@execute','as'=>'allAdminictrators']);
+		Route::match(['get','post'],'/',['uses'=>'AdministratorsController@execute','as'=>'allAdministrators']);
+
+
+
+
+
+
+
 
 
 
 	});
-
 
 
 
@@ -108,15 +104,6 @@ Route::group(['prefix'=>'admin','middleware'=>['auth']], function() {
 		Route::match(['get','post'],'correct_question/{id}',['uses'=>'CorrectQuestionController@execute','as'=>'correctQuest']);
 
 	});
-
-
-
-
-
-
-
-
-
 
 
 });

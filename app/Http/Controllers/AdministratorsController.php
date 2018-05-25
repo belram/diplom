@@ -14,30 +14,9 @@ class AdministratorsController extends Controller
 	public function execute()
 	{
 
+		$data = User::all()->toArray();
 
-
-
-
-
-
-
-
-
-
-
-		if (view()->exists('site.administrators')) {
-
-    		$data = User::all()->toArray();
-
-    		return view('site.administrators', ['data' => $data]);
-
-		} else {
-
-			abort(404);
-
-		}
-
-
+		return view('site.administrators', compact('data'));
 
 	}
 

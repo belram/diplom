@@ -25,34 +25,28 @@ class TopicsController extends Controller
 
         }
 
-		if (view()->exists('site.topics')) {
 
-    		$topics = Question::distinct()->get(['topic'])->toArray();
-    		$temp = [];
 
-    		foreach ($topics as $topic) {
-    			$temp[] = $topic['topic'];
-    		}
+		$topics = Question::distinct()->get(['topic'])->toArray();
+		$temp = [];
 
-    		$data = [];
-			$i = 1;
-
-    		foreach ($temp as $value) {
-    			$data[$value]['alias'] = Question::where('topic', "$value")->value('alias');
-    			$data[$value]['wait'] = Question::where([['topic', "$value"], ['status', 1]])->count();
-    			$data[$value]['published'] = Question::where([['topic', "$value"], ['status', 2]])->count();
-    			$data[$value]['hidden'] = Question::where([['topic', "$value"], ['status', 3]])->count();
-    			$data[$value]['total'] = Question::where([['topic', "$value"], ['status', '>', 0]])->count();
-    			$data[$value]['i'] = $i++;
-    		}
-
-    		return view('site.topics', ['data' => $data]);
-
-		} else {
-
-			abort(404);
-
+		foreach ($topics as $topic) {
+			$temp[] = $topic['topic'];
 		}
+
+		$data = [];
+		$i = 1;
+
+		foreach ($temp as $value) {
+			$data[$value]['alias'] = Question::where('topic', "$value")->value('alias');
+			$data[$value]['wait'] = Question::where([['topic', "$value"], ['status', 1]])->count();
+			$data[$value]['published'] = Question::where([['topic', "$value"], ['status', 2]])->count();
+			$data[$value]['hidden'] = Question::where([['topic', "$value"], ['status', 3]])->count();
+			$data[$value]['total'] = Question::where([['topic', "$value"], ['status', '>', 0]])->count();
+			$data[$value]['i'] = $i++;
+		}
+
+		return view('site.topics', compact('data'));
 
     }
 }

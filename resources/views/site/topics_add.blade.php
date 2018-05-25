@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('allAdminictrators') }}">Administrators</a>
+                        <a style="color: blue; padding-left: 15px" href="{{ route('allAdministrators') }}">Administrators</a>
                         
                         <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
                         

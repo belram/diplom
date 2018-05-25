@@ -48,29 +48,9 @@ class TopicChangeNameController extends Controller
 
 		}	
 
-		if (view()->exists('site.topics_change_name')) {
-
-			if (!$alias) {
-				abort(404);
-			}
-
-    		return view('site.topics_change_name', ['alias'=>$alias]);
-
-		} else {
-			abort(404);
-		}
 
 
-
-
-
-
-
-
-
-
-
-
+		return view('site.topics_change_name', compact('alias'));
 
 
 	}

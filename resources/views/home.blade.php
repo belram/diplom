@@ -14,7 +14,7 @@
                         </div>
                     @endif
                         <br>
-                        <a style="color: blue" href="{{ route('allAdminictrators') }}">Administrators</a>
+                        <a style="color: blue" href="{{ route('allAdministrators') }}">Administrators</a>
                         </br>
                         <br>
                         <a style="color: red" href="{{ route('topics') }}">Topics</a>

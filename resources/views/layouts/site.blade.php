@@ -22,7 +22,7 @@
         </div>
     @endif
             <br>
-            <a style="color: blue" href="{{ route('add_question') }}">Your Question</a>
+            <a style="color: blue" href="{{ route('create') }}">Your Question</a>
             </br>
             <br>
             <a style="color: red" href="{{ route('admin_index') }}">For Admin</a>

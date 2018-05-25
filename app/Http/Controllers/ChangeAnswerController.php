@@ -41,19 +41,16 @@ class ChangeAnswerController extends Controller
 
 		}		
 
-		if (view()->exists('site.change_answer')) {
-
-			$answer = [];
-			$answer['answer'] = Question::where('id', "$topic")->value('answer');
-			$lastTopic = Question::where('id', $topic)->value('topic');
-			$answer['answer_id'] = $topic;
 
 
-    		return view('site.change_answer',  ['answer' => $answer, 'lastTopic' => $lastTopic]);
+		$answer = [];
+		$answer['answer'] = Question::where('id', "$topic")->value('answer');
+		$lastTopic = Question::where('id', $topic)->value('topic');
+		$answer['answer_id'] = $topic;
 
-		} else {
-			abort(404);
-		}
+		return view('site.change_answer',  compact('answer', 'lastTopic'));
+
+
 
 	}
 

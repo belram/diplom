@@ -42,24 +42,19 @@ class ChangeCatController extends Controller
 
 		}		
 
-		if (view()->exists('site.change_topic')) {
-
-			$result = Question::distinct()->get(['topic'])->toArray();
-
-			$lastTopic = Question::where('id', $topic)->value('topic');
-
-    		$topics = [];
-
-    		foreach ($result as $value) {
-    			$topics[] = $value['topic'];
-    		}
 
 
-    		return view('site.change_topic', ['topics' => $topics, 'topic_id' => $topic, 'lastTopic' => $lastTopic]);
+		$result = Question::distinct()->get(['topic'])->toArray();
 
-		} else {
-			abort(404);
+		$lastTopic = Question::where('id', $topic)->value('topic');
+
+		$topics = [];
+
+		foreach ($result as $value) {
+			$topics[] = $value['topic'];
 		}
+
+		return view('site.change_topic', ['topics' => $topics, 'topic_id' => $topic, 'lastTopic' => $lastTopic]);
 
 	}
 

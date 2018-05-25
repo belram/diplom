@@ -47,7 +47,6 @@ class ChangeQuestController extends Controller
 
 		}		
 
-		if (view()->exists('site.change_question')) {
 
 			$question = [];
 			$question['question'] = Question::where('id', $topic)->value('question');
@@ -56,14 +55,8 @@ class ChangeQuestController extends Controller
 			$lastTopic = Question::where('id', $topic)->value('topic');
 			$question['question_id'] = $topic;
 
-    		return view('site.change_question', ['question' => $question, 'lastTopic' => $lastTopic]);
-
-		} else {
-			abort(404);
-		}
+    		return view('site.change_question', compact('question', 'lastTopic'));
 
 	}
-
-
 
 }

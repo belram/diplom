@@ -43,29 +43,18 @@ class CorrectQuestionController extends Controller
 
 		}		
 
-		if (view()->exists('site.correct_question')) {
 
-			$question = [];
-			$question['question'] = Question::where('id', $id)->value('question');
-			$question['author'] = Question::where('id', $id)->value('author_question');
 
-			$question['question_id'] = $id;
+		$question = [];
+		$question['question'] = Question::where('id', $id)->value('question');
+		$question['author'] = Question::where('id', $id)->value('author_question');
 
-    		return view('site.correct_question', ['question' => $question]);
+		$question['question_id'] = $id;
 
-		} else {
-			abort(404);
-		}
+		return view('site.correct_question', compact('question'));
+
 
 	}
-
-
-
-
-
-
-
-
 
 
 }
