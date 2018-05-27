@@ -10,56 +10,115 @@ use Validator;
 
 class AnswerController extends Controller
 {
-    
-    public function execute(Request $request, $topic = NULL)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
+        //
+    }
 
-		if ($request->isMethod('post')) {
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
 
-            $temp = $request->except('_token');
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+        $temp = $request->except('_token');
 
-			$messages = [
-				'required'=>'Поле :attribute обязательно к заполнению'
-			];
+        $messages = [
+            'required'=>'Поле :attribute обязательно к заполнению'
+        ];
 
+        $validator = Validator::make($temp, [
+            'answer' => 'required'
+        ], $messages);
 
-			$validator = Validator::make($temp, [
-				'answer' => 'required'
-			], $messages);
+        if ($validator->fails()) {
+            return redirect()->route('formAnswer', ['topic' =>  $temp['topic']])->withErrors($validator)->withInput();
+        }
 
-			if ($validator->fails()) {
-				return redirect()->route('answer', ['topic' =>  $topic])->withErrors($validator)->withInput();
-			}
+        $new_answer = Question::find($temp['topic']);
+        $current_topic = $new_answer->topic;            
 
-			$new_answer = Question::where('id', $topic)->first();
+        $new_answer->answer = $temp['answer'];
+        $new_answer->answer_created_at = date('Y-m-d H:i:s');
+        $new_answer->author_answer = Auth::user()->name;
 
-			$current_topic = $new_answer->topic;			
+        if ($temp['action'] == 'Save and hide') {
+            $new_answer->status = 3;
+        }else{
+            $new_answer->status = 2;
+        }
 
-            $new_answer->answer = $temp['answer'];
-            $new_answer->answer_created_at = date('Y-m-d H:i:s');
-            $new_answer->author_answer = Auth::user()->name;
+        if ($new_answer->save()) {
+            return redirect()->route('category', ['topic' => $current_topic])->with('status', 'Ваш ответ добавлен!');
+        }
+    }
 
-            if ($temp['action'] == 'Save and hide') {
-            	$new_answer->status = 3;
-            }else{
-            	$new_answer->status = 2;
-            }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
 
-			if ($new_answer->save()) {
-				return redirect()->route('topicsCategory', ['topic' => $current_topic])->with('status', 'Ваш ответ добавлен!');
-			}
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($topic)
+    {
+        //
+        $question = [];
+        $result = Question::find($topic);
+        $question['question'] = $result->question;
+        $question['question_id'] = $topic;
 
-		}
+        return view('site.answer', compact('question'));
+    }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
 
-		$question = [];
-		$question['question'] = Question::where('id', "$topic")->value('question');
-		$question['question_id'] = $topic;
-
-		return view('site.answer', compact('question'));
-
-
-
-	}
-    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
 }

@@ -13,25 +13,18 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('allAdministrators') }}">Administrators</a>
-                        
+                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
                         <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        
-                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer') }}">All questions without answers</a>
+                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>
                         
             </div>
         </div>
     </div>
 </div>
-
 <div>
-
 	@if(isset($data))
-
 		<table style="border: 1px solid black; border-collapse: collapse; margin-top: 15px">
-
 			<tr style="border: 1px solid black; border-collapse: collapse; padding: 5px">
-				<!-- <td style="border: 1px solid black; border-collapse: collapse; padding: 5px">N</td> -->
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">ID</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Topic Name</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Question</td>
@@ -41,63 +34,45 @@
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Delete</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Change status</td>
 			</tr>
-
 	        @foreach($data as $item)
-
-	        	 
-
 	        	<tr>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['id'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<a href="{{ route('changeCat', ['topic' => $item['id'] ]) }}">{{ $item['topic'] }}</a>
+	        			<a href="{{ route('formChangeTopic', ['topic' => $item['id'] ]) }}">{{ $item['topic'] }}</a>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<a href="{{ route('changeQuestion', ['topic' => $item['id'] ]) }}">{{ $item['question'] }}</a>
+	        			<a href="{{ route('formChangeQuestion', ['topic' => $item['id'] ]) }}">{{ $item['question'] }}</a>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<a href="{{ route('changeAnswer', ['topic' => $item['id'] ]) }}">{{ $item['answer'] }}</a>
+	        			<a href="{{ route('formChangeAnswer', ['topic' => $item['id'] ]) }}">{{ $item['answer'] }}</a>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['answer_created_at'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['status'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<form method="POST" action="{{ route('topicsCategory', ['topic' => $item['id'] ]) }}">
+	        			<form method="POST" action="{{ route('deleteQuestion', ['topic' => $item['id'] ]) }}">
+	        				@method('DELETE')
 							@csrf
 							<input type="hidden" name="topic" value="{{ $item['topic'] }}">
 							<input type="submit" name="action" value="Delete">
 						</form>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-
 	        			@if( $item['change_status'] == 'Hide' || $item['change_status'] == 'Public' )
-
-		        			<form method="POST" action="{{ route('topicsCategory', ['topic' => $item['id'] ]) }}">
+		        			<form method="POST" action="{{ route('changeStatus', ['topic' => $item['id'] ]) }}">
+		        				@method('PUT')
 								@csrf
 								<input type="hidden" name="topic" value="{{ $item['topic'] }}">
 								<input type="submit" name="action" value="{{ $item['change_status'] }}">
 							</form>
-
 						@elseif( $item['change_status'] == 'Answer' )
-
-							<a style="color: green;" href="{{ route('answer', ['topic' => $item['id'] ]) }}">{{ $item['change_status'] }}</a>
-
+							<a style="color: green;" href="{{ route('formAnswer', ['topic' => $item['id'] ]) }}">{{ $item['change_status'] }}</a>
 						@endif
-
 	        		</td>
-	        		
 	        	</tr>
-
 	        @endforeach
-
 		</table>
-
-		
-
 	@endif
-
 	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('topics') }}">Back</a>
-
 </div>
-
-
 @endsection
    

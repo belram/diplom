@@ -11,9 +11,6 @@
 |
 */
 
-
-
-
 Route::resource('/', 'IndexController', ['except' => ['show', 'edit', 'update', 'destroy']]);
 	
 Auth::routes();
@@ -25,90 +22,59 @@ Route::group(['prefix'=>'admin','middleware'=>['auth']], function() {
 	
 	
 	Route::group(['prefix'=>'topics'],function() {
-		
-		// blog.loc/admin/topics
-		// Отображение общей таблицы с темами. Удаление темы
-		Route::match(['get','post'],'/{alias?}',['uses'=>'TopicsController@execute','as'=>'topics']);
-		
-		// blog.loc/admin/topics/add
-		// Отображение и обработка формы для добавления темы
-		Route::match(['get','post'],'/add/new_topic',['uses'=>'TopicsAddController@addTopic','as'=>'topicsAdd']);
 
-		// blog.loc/admin/topics/change_name
-		// Отображение и обработка формы для изменения названия темы
-		Route::match(['get','post'],'/change_name/{alias}',['uses'=>'TopicChangeNameController@changeName','as'=>'changeName']);
+		Route::resource('/changes', 'TopicsController', ['except' => ['edit']])->names([
+			'index' => 'topics',
+			'create' => 'formTopicAdd',
+			'store' => 'saveTopicAdd',
+			'show' => 'formChangeNameTopic',
+			'update' => 'saveNewNameTopic',
+			'destroy' => 'deleteTopic'
+		]);
 
-		// blog.loc/admin/topics/change_name
-		// Отображение и обработка формы для изменения названия темы
-		//Route::post('/delete_topic/{alias}',['uses'=>'DeleteTopicController@deleteTopic','as'=>'deleteTopic']);
+		Route::resource('/category', 'TopicCategoryController', ['except' => ['index', 'create']])->names([
+			'show' => 'category',
+			'edit' => 'formChangeTopic',
+			'store' => 'saveChangeTopic',
+			'update' => 'changeStatus',
+			'destroy' => 'deleteQuestion'
+		]);
 
-		Route::group(['prefix'=>'category'],function() {
-			
-			// blog.loc/admin/topics/category/basics
-			// Отображение таблицы с данными по определенной теме. Измение статуса. Удаление вопроса и ответа
-			Route::match(['get','post'],'/{topic}',['uses'=>'TopicCategoryController@execute','as'=>'topicsCategory']);
+		Route::resource('/question_answer', 'QuestionAnswerController', ['except' => ['index', 'create', 'destroy']])->names([
+			'show' => 'formChangeAnswer',
+			'edit' => 'formChangeQuestion',
+			'store' => 'saveChangeAnswer',
+			'update' => 'saveChangeQuestion'
+		]);
 
-			// blog.loc/admin/topics/category/change_cat/basics
-			// Отображение и обработка формы для изменения названия категории по отдельному вопросу.
-			Route::match(['get','post'],'/change_cat/{topic}', ['uses'=>'ChangeCatController@execute','as'=>'changeCat']);
+		Route::resource('/answer', 'AnswerController', ['only' => ['edit', 'store']])->names([
+			'edit' => 'formAnswer',
+			'store' => 'saveAnswer'
+		]);
 
-			// blog.loc/admin/topics/category/change_question/basics
-			// Отображение и обработка формы для изменения формулировки вопроса.
-			Route::match(['get','post'],'/change_question/{topic}', ['uses'=>'ChangeQuestController@execute','as'=>'changeQuestion']);
-
-			// blog.loc/admin/topics/category/change_ans/basics
-			// Отображение и обработка формы для изменения формулировки вопроса.
-			Route::match(['get','post'],'/change_ans/{topic}', ['uses'=>'ChangeAnswerController@execute','as'=>'changeAnswer']);
-
-			// blog.loc/admin/topics/category/change_ans/basics
-			// Отображение и обработка формы подготовки вопроса.
-			Route::match(['get','post'],'/answer/{topic}', ['uses'=>'AnswerController@execute','as'=>'answer']);	
-
-		});
 	});
-
 
 	Route::group(['prefix'=>'administrators'],function() {
 
-		Route::match(['get','post'],'/',['uses'=>'AdministratorsController@execute','as'=>'allAdministrators']);
-
-
-
-
-
-
-
-
-
+		Route::resource('/check', 'AdminController', ['except' => ['edit']])->names([
+			'index' => 'admins',
+			'create' => 'formAddAdmin',
+			'store' => 'saveNewAdmin',
+			'show' => 'formChangePassword',
+			'update' => 'saveNewPassword',
+			'destroy' => 'deleteAdmin'
+		]);
 
 	});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	Route::group(['prefix'=>'withoutAnswer'],function() {
 
-		Route::match(['get','post'],'/{id?}',['uses'=>'WithoutAnswerController@execute','as'=>'withoutAnswer']);
-
-		Route::match(['get','post'],'correct_question/{id}',['uses'=>'CorrectQuestionController@execute','as'=>'correctQuest']);
+		Route::resource('/check', 'WithoutAnswerController', ['except' => ['store', 'create', 'edit']])->names([
+			'index' => 'allQuestionsW',
+			'show' => 'formChangeQuestionW',
+			'update' => 'saveQuestionW',
+			'destroy' => 'deleteQuestionW'
+		]);
 
 	});
-
-
 });
-
-
-
-
-// Route::get('/admin', 'HomeController@index')->name('admin');

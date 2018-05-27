@@ -15,13 +15,13 @@
                     @endif
                         <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
                         <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>  
+                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>
             </div>
         </div>
     </div>
 </div>
 <div>
-	@if(isset($question))
+	@if(isset($data))
 		@if (count($errors) > 0)
 		    <div class="alert alert-danger">
 		        <ul>
@@ -31,20 +31,17 @@
 		        </ul>
 		    </div>
 		@endif
-		<form style="margin-top: 20px;" method="POST" action="{{ route('saveChangeQuestion', ['topic' => $question['question_id'] ]) }}">
+		<h3>New password for: {{ $data['login'] }}</h3>
+		<form style="margin-top: 20px;" method="POST" action="{{ route('saveNewPassword', ['id' => $data['id']]) }}">
 			@method('PUT')
 			@csrf
-			<label>Change author question:<br>
-				<textarea id="author_name" cols="8" rows="2" name="author_name">{{ $question['author'] }}</textarea>
+			<label>New Password:<br>
+				<input type="text" name="password">
 			</label>
 			<br>
-			<label>Change question:<br>
-				<textarea id="question" cols="100" rows="5" name="question">{{ $question['question'] }}</textarea>
-			</label>
-			<br>
-			<input type="submit" name="save" value="Change question">
+			<input type="submit" name="save" value="Change password">
 		</form>
 	@endif
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['topic' => $lastTopic]) }}">Back</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('admins') }}">Back</a>
 </div>
 @endsection

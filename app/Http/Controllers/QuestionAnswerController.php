@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Question;
-use DB;
 use Validator;
 
-class WithoutAnswerController extends Controller
+class QuestionAnswerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +17,6 @@ class WithoutAnswerController extends Controller
     public function index()
     {
         //
-        $data = Question::where([['question', '!=', NULL], ['answer', NULL]])
-                ->orderBy('question_created_at')
-                ->get(['id', 'topic' , 'question', 'question_created_at']
-            )->toArray();
-
-        return view('site.without_answer', compact('data'));
     }
 
     /**
@@ -34,6 +27,7 @@ class WithoutAnswerController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -45,6 +39,30 @@ class WithoutAnswerController extends Controller
     public function store(Request $request)
     {
         //
+        $temp = $request->except('_token', 'save');
+
+        $messages = [
+            'required'=>'Поле :attribute обязательно к заполнению'
+        ];
+
+        $validator = Validator::make($temp, [
+            'answer' => 'required'
+        ], $messages);
+
+        if ($validator->fails()) {
+            return redirect()->route('formChangeAnswer', ['topic' => $temp['topic']])->withErrors($validator);
+        }
+
+        $new_answer = Question::find($temp['topic']);
+
+        $current_topic = $new_answer->topic;
+
+        $new_answer->answer = $temp['answer'];
+
+        if ($new_answer->save()) {
+            return redirect()->route('category', ['topic' => $current_topic])->with('status', "Ответ с id = {$temp['topic']} изменен!");
+        }
+
     }
 
     /**
@@ -53,16 +71,17 @@ class WithoutAnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($topic)
     {
         //
-        $question = [];
-        $result = Question::find($id);
-        $question['question'] = $result->question;
-        $question['author'] = $result->author_question;
-        $question['question_id'] = $id;
+        $answer = [];
+        $result = Question::find($topic); 
+        $answer['answer'] = $result->answer;
+        $lastTopic = $result->topic;
+        $answer['answer_id'] = $topic;
 
-        return view('site.correct_question', compact('question'));
+        return view('site.change_answer',  compact('answer', 'lastTopic'));
+
     }
 
     /**
@@ -71,9 +90,18 @@ class WithoutAnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($topic)
     {
         //
+        $question = [];
+        $result = Question::find($topic);
+        $question['question'] = $result->question;
+        $question['author'] = $result->author_question;
+
+        $lastTopic = $result->topic;
+        $question['question_id'] = $topic;
+
+        return view('site.change_question', compact('question', 'lastTopic'));
     }
 
     /**
@@ -83,7 +111,7 @@ class WithoutAnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $topic)
     {
         //
         $temp = $request->except('_token', 'save');
@@ -99,17 +127,19 @@ class WithoutAnswerController extends Controller
         ], $messages);
 
         if ($validator->fails()) {
-            return redirect()->route('formChangeQuestionW', ['id' => $id])->withErrors($validator);
+            return redirect()->route('formChangeQuestion', ['topic' => $topic ])->withErrors($validator);
         }
 
-        $new_question = Question::find($id);
+        $new_question = Question::find($topic);
+
+        $current_topic = $new_question->topic;
+
         $new_question->question = $temp['question'];
         $new_question->author_question = $temp['author_name'];
 
         if ($new_question->save()) {
-            return redirect()->route('allQuestionsW')->with('status', "Вопрос с id = $id изменен!");
-        }
-
+            return redirect()->route('category', ['topic' => $current_topic])->with('status', "Вопрос с id = $topic изменен!");
+        } 
     }
 
     /**
@@ -121,9 +151,5 @@ class WithoutAnswerController extends Controller
     public function destroy($id)
     {
         //
-        $result = Question::find($id)->delete();
-        if ($result) {
-            return redirect()->route('allQuestionsW')->with('status', "Вопрос с id = $id удален!");
-        }
     }
 }

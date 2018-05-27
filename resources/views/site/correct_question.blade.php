@@ -6,28 +6,21 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Разделы админки</div>
-
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('allAdministrators') }}">Administrators</a>
-                        
+                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
                         <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        
-                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer') }}">All questions without answers</a>
-                        
+                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a> 
             </div>
         </div>
     </div>
 </div>
-
 <div>
-
 	@if(isset($question))
-
 		@if (count($errors) > 0)
 		    <div class="alert alert-danger">
 		        <ul>
@@ -37,9 +30,8 @@
 		        </ul>
 		    </div>
 		@endif
-
-		<form style="margin-top: 20px;" method="POST" action="{{ route('correctQuest', ['id' => $question['question_id'] ]) }}">
-
+		<form style="margin-top: 20px;" method="POST" action="{{ route('saveQuestionW', ['id' => $question['question_id'] ]) }}">
+			@method('PUT')
 			@csrf
 			<label>Change author question:<br>
 				<textarea id="author_name" cols="8" rows="2" name="author_name">{{ $question['author'] }}</textarea>
@@ -50,14 +42,8 @@
 			</label>
 			<br>
 			<input type="submit" name="save" value="Change question">
-			
 		</form>
-
 	@endif
-
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('withoutAnswer') }}">Back</a>
-
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('allQuestionsW') }}">Back</a>
 </div>
-
-
 @endsection

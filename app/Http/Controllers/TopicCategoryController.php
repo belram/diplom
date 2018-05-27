@@ -6,60 +6,75 @@ use Illuminate\Http\Request;
 
 use App\Question;
 use DB;
+use Validator;
 
 class TopicCategoryController extends Controller
 {
-    //
-
-    public function execute(Request $request, $topic = NULL)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
+        //
+    }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
 
-		if ($request->isMethod('post')) {
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+        $temp = $request->except('_token', 'save');
 
-            $temp = $request->except('_token');
+        $messages = [
+            'required'=>'Поле :attribute обязательно к заполнению'
+        ];
 
-            //dd($temp);
+        $validator = Validator::make($temp, [
+            'topic' => 'required'
+        ], $messages);
 
-            if ($temp['action'] == 'Delete') {
-            
-                $result = DB::table('questions')->where('id', $topic)->delete();
+        if ($validator->fails()) {
+            return redirect()->route('formChangeTopic', ['topic' => $temp['topic_id'] ])->withErrors($validator)->withInput();
+        }
 
-                if ($result) {
-                    return redirect()->route('topicsCategory', ['topic'=>$temp['topic']])->with('status', "Вопрос удален!");
-                }
+        $new_topic_name = Question::find($temp['topic_id']);
 
-            }
+        $current_topic = $new_topic_name->topic;
 
-            if ($temp['action'] == 'Hide') {
+        $new_topic_name->topic = $temp['topic'];
+        $new_topic_name->alias = strtolower($temp['topic']);
 
-                $change_status = Question::where('id', $topic)->first();
+        if ($new_topic_name->save()) {
+            return redirect()->route('category', ['topic' => $current_topic])->with('status', 'Тема вопроса изменена!');
+        }
+    }
 
-                $change_status->status = 3;
-
-                if ($change_status->save()) {
-                    return redirect()->route('topicsCategory', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $topic скрыт!");
-                }
-            
-            }
-
-            if ($temp['action'] == 'Public') {
-
-                $change_status = Question::where('id', $topic)->first();
-
-                $change_status->status = 2;
-
-                if ($change_status->save()) {
-                    return redirect()->route('topicsCategory', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $topic опубликован!");
-                }
-            
-            }           
-
-		}
-
-
-
-		$data = Question::where([['topic', "$topic"], ['status', '>', 0]])->get()->toArray();
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($topic)
+    {
+        //
+        $data = Question::where([['topic', "$topic"], ['status', '>', 0]])->get()->toArray();
 
         foreach ($data as $key => $value) {
             if (is_null( $value['answer'])) {
@@ -75,11 +90,86 @@ class TopicCategoryController extends Controller
                 $data[$key]['status'] = 'Hidden';
                 $data[$key]['change_status'] = 'Public';
             }
-
-
         }
 
-		return view('site.category', compact('data'));
+        return view('site.category', compact('data'));
 
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($topic)
+    {
+        //
+        $result = Question::distinct()->get(['topic'])->toArray();
+
+        $tmp = Question::find($topic);
+
+        $lastTopic = $tmp->topic;
+
+        $topics = [];
+
+        foreach ($result as $value) {
+            $topics[] = $value['topic'];
+        }
+
+        return view('site.change_topic', ['topics' => $topics, 'topic_id' => $topic, 'lastTopic' => $lastTopic]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $topic)
+    {
+        //
+        $temp = $request->except('_token');
+
+        if ($temp['action'] == 'Hide') {
+
+            $change_status = Question::find($topic);
+
+            $change_status->status = 3;
+
+            if ($change_status->save()) {
+                return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $topic скрыт!");
+            }
+        }
+
+        if ($temp['action'] == 'Public') {
+
+            $change_status = Question::find($topic);
+
+            $change_status->status = 2;
+
+            if ($change_status->save()) {
+                return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $topic опубликован!");
+            }
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, $topic)
+    {
+        //
+        $temp = $request->except('_token');
+
+        $result = Question::find($topic)->delete();
+
+        if ($result) {
+            return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос удален!");
+        }
     }
 }

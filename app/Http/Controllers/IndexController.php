@@ -17,7 +17,6 @@ class IndexController extends Controller
     public function index()
     {
         //
-
         $titles = Question::where([['question','!=', NULL], ['answer','!=', NULL], ['status', 2]])->distinct()->get(['alias'])->toArray();
 
         $pages = [];
@@ -35,7 +34,6 @@ class IndexController extends Controller
 
         return view('site.index', compact('pages', 'data'));
 
-
     }
 
     /**
@@ -46,7 +44,6 @@ class IndexController extends Controller
     public function create()
     {
         //
-
         $result = Question::distinct()->get(['topic'])->toArray();
         $topics = [];
 
@@ -66,9 +63,6 @@ class IndexController extends Controller
     public function store(Request $request)
     {
         //
-
-        if ($request->isMethod('post')) {
-
             $messages = [
                 'required'=>'Поле :attribute обязательно к заполнению',
                 'email'=>'Поле :attribute должно соответствовать email адресу',
@@ -76,7 +70,6 @@ class IndexController extends Controller
             ];
 
             $data = $request->except('_token', 'save');
-
             $validator = Validator::make($data, [
                 'name' => 'required|max:255',
                 'email' => 'required|email',
@@ -112,12 +105,7 @@ class IndexController extends Controller
                         ]);
 
                 return redirect()->route('index')->with('status', 'Ваш вопрос добавлен!');
-
             }
-
-        }
-
-
     }
 
     /**

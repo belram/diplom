@@ -13,21 +13,15 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('allAdministrators') }}">Administrators</a>
-                        
+                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
                         <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        
-                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer') }}">All questions without answers</a>
-                        
+                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>
             </div>
         </div>
     </div>
 </div>
-
 <div>
-
 	@if(isset($topics))
-
 		@if (count($errors) > 0)
 		    <div class="alert alert-danger">
 		        <ul>
@@ -37,11 +31,9 @@
 		        </ul>
 		    </div>
 		@endif
-
-		<form method="POST" action="{{ route('changeCat', ['topic' => $topic_id ]) }}">
-
+		<form method="POST" action="{{ route('saveChangeTopic') }}">
 			@csrf
-
+			<input type="hidden" name="topic_id" value="{{ $topic_id }}">
 			<label>Topic:<br>
 				@foreach($topics as $topic)
 					<input id="topic" type="radio" name="topic" value="{{ $topic }}">{{ $topic }}<br>
@@ -49,14 +41,8 @@
 			</label>
 			<br>
 			<input type="submit" name="save" value="Change topic">
-			
 		</form>
-
 	@endif
-
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('topicsCategory', ['topic' => $lastTopic]) }}">Back</a>
-
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['topic' => $lastTopic]) }}">Back</a>
 </div>
-
-
 @endsection

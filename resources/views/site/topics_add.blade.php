@@ -13,19 +13,15 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('allAdministrators') }}">Administrators</a>
-                        
+                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
                         <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        
-                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer') }}">All questions without answers</a>
-                        
+                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>
             </div>
         </div>
     </div>
 </div>
 
 <div>
-
 	@if (count($errors) > 0)
 	    <div class="alert alert-danger">
 	        <ul>
@@ -35,22 +31,14 @@
 	        </ul>
 	    </div>
 	@endif
-
-	<form style="margin-top: 20px" method="POST" action="{{ route('topicsAdd') }}">
-
+	<form style="margin-top: 20px" method="POST" action="{{ route('saveTopicAdd') }}">
 		@csrf
-
 		New topic: <input id="topic"  type="text" name="topic" value="{{ old('topic') }}">
 		<br>
 		<br>
 		<input type="submit" name="save" value="Save">
-		
 	</form>
-
 	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('admin_index') }}">Back</a>
-
 </div>
-
-
 @endsection
    

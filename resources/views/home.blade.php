@@ -14,13 +14,13 @@
                         </div>
                     @endif
                         <br>
-                        <a style="color: blue" href="{{ route('allAdministrators') }}">Administrators</a>
+                        <a style="color: blue" href="{{ route('admins') }}">Administrators</a>
                         </br>
                         <br>
                         <a style="color: red" href="{{ route('topics') }}">Topics</a>
                         </br>
                         <br>
-                        <a style="color: green" href="{{ route('withoutAnswer') }}">All questions without answers</a>
+                        <a style="color: green" href="{{ route('allQuestionsW') }}">All questions without answers</a>
                         </br>
             </div>
         </div>

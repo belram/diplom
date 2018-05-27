@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Добавление материала</title>
-	<meta charset="UTF-8">
-</head>
-<body>
+@extends('layouts.site')
+@section('nav')
+@endsection
 
+@section('content')
 	@if (count($errors) > 0)
 	    <div class="alert alert-danger">
 	        <ul>
@@ -15,31 +12,29 @@
 	        </ul>
 	    </div>
 	@endif
-
 	<form method="POST" action="{{ route('store') }}">
-
 		@csrf
-
-		Name: <input id="name"  type="text" name="name" value="{{ old('name') }}">
+		<label style="font-weight: bold">Name:<br>
+			<input style="margin: 10px;" id="name" type="text" name="name" value="{{ old('name') }}">
+		</label>
 		<br>
-		Email: <input id="email" type="email" name="email" value="{{ old('email') }}">
+		<label style="font-weight: bold">Email:<br>
+			<input style="margin: 10px;" id="email" type="email" name="email" value="{{ old('email') }}">
+		</label>
 		<br>
-		<label>Topic:<br>
+		<label style="font-weight: bold">Topic:<br>
 			@foreach($topics as $topic)
 				<input id="topic" type="radio" name="topic" value="{{ $topic }}">{{ $topic }}<br>
 			@endforeach
 		</label>
 		<br>
-		Your question: <textarea id="question" cols="30" rows="5" name="question">{{ old('question') }}</textarea>
+		<label style="font-weight: bold">Your question: <br>
+			<textarea id="question" cols="50" rows="5" name="question">{{ old('question') }}</textarea>
+		</label>
 		<br>
-		<br>
-		<input type="submit" name="save">
+		<input style="margin: 10px;" type="submit" name="save" value="Добавить вопрос">
 		<br>
 		<br>
 		<a style="font-size: 20px; font-weight: bold; color: blue" href="{{ route('index') }}">Back</a>
-		
-
 	</form>
-
-</body>
-</html>
+@endsection
