@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Question;
+use App\Topic;
 use Validator;
-use DB;
 
 class TopicsController extends Controller
 {
@@ -18,23 +18,17 @@ class TopicsController extends Controller
     public function index()
     {
         //
-        $topics = Question::distinct()->get(['topic'])->toArray();
-        $temp = [];
-
-        foreach ($topics as $topic) {
-            $temp[] = $topic['topic'];
-        }
-
+        $topics = Topic::get(['id','topic', 'alias']);
         $data = [];
         $i = 1;
-
-        foreach ($temp as $value) {
-            $data[$value]['alias'] = Question::where('topic', "$value")->value('alias');
-            $data[$value]['wait'] = Question::where([['topic', "$value"], ['status', 1]])->count();
-            $data[$value]['published'] = Question::where([['topic', "$value"], ['status', 2]])->count();
-            $data[$value]['hidden'] = Question::where([['topic', "$value"], ['status', 3]])->count();
-            $data[$value]['total'] = Question::where([['topic', "$value"], ['status', '>', 0]])->count();
-            $data[$value]['i'] = $i++;
+        foreach ($topics as $value) {
+            $data[$value->topic]['alias'] = $value->alias;
+            $data[$value->topic]['wait'] = Question::sameTopicId($value->id)->waitAnswer()->count();
+            $data[$value->topic]['published'] = Question::sameTopicId($value->id)->published()->count();
+            $data[$value->topic]['hidden'] = Question::sameTopicId($value->id)->hidden()->count();
+            $data[$value->topic]['total'] = Question::sameTopicId($value->id)->totalCount()->count();
+            $data[$value->topic]['i'] = $i++;
+            $data[$value->topic]['id'] = $value->id;
         }
 
         return view('site.topics', compact('data'));
@@ -60,31 +54,25 @@ class TopicsController extends Controller
     public function store(Request $request)
     {
         //
-            $messages = [
-                'required'=>'Поле :attribute обязательно к заполнению',
-                'max'=>'Поле :attribute должно быть не более 255 символов',
-                'unique'=>'Поле :attribute должно быть уникальным'
-            ];
+        $messages = [
+            'required'=>'Поле :attribute обязательно к заполнению',
+            'max'=>'Поле :attribute должно быть не более 100 символов',
+            'unique'=>'Поле :attribute должно быть уникальным'
+        ];
+        $data = $request->except('_token', 'save');
+        $validator = Validator::make($data, [
+            'topic' => 'required|max:100|unique:topics',
+        ], $messages);
+        if ($validator->fails()) {
+            return redirect()->route('formTopicAdd')->withErrors($validator)->withInput();
+        }
+        Topic::create([
+                'topic' => $data['topic'],
+                'alias' => mb_strtolower($data['topic'])
+            ]);
 
-            $data = $request->except('_token', 'save');
+        return redirect()->route('topics')->with('status', "Новая тема $request->topic добавлена!");
 
-            $validator = Validator::make($data, [
-                'topic' => 'required|max:255|unique:questions',
-            ], $messages);
-
-            if ($validator->fails()) {
-                return redirect()->route('formTopicAdd')->withErrors($validator)->withInput();
-            }
-
-            $new_topic = new Question();
-
-            $data['alias'] = mb_strtolower($data['topic']);
-
-            $new_topic->fill($data);
-
-            if ($new_topic->save()) {
-                return redirect()->route('topics')->with('status', 'Новая тема добавлена!');
-            }
     }
 
     /**
@@ -93,10 +81,11 @@ class TopicsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($alias)
+    public function show($id)
     {
         //
-        return view('site.topics_change_name', compact('alias'));
+        $topic = Topic::sameId($id)->get(['id', 'topic']);
+        return view('site.topics_change_name', compact('topic'));
     }
 
     /**
@@ -117,35 +106,24 @@ class TopicsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $alias)
+    public function update(Request $request, $id)
     {
         //
-            $messages = [
-                'required'=>'Поле :attribute обязательно к заполнению',
-                'max'=>'Поле :attribute должно быть не более 255 символов',
-                'unique'=>'Поле :attribute должно быть уникальным'
-            ];
+        $messages = [
+            'required'=>'Поле :attribute обязательно к заполнению',
+            'max'=>'Поле :attribute должно быть не более 100 символов',
+            'unique'=>'Поле :attribute должно быть уникальным'
+        ];
+        $data = $request->except('_token', 'save');
+        $validator = Validator::make($data, [
+            'topic' => 'required|max:255|unique:topics',
+        ], $messages);
+        if ($validator->fails()) {
+            return redirect()->route('formChangeNameTopic', ['id'=>$id])->withErrors($validator)->withInput();
+        }
+        Topic::sameId($id)->update(['topic' => $data['topic'], 'alias' => mb_strtolower($data['topic'])]);
 
-            $data = $request->except('_token', 'save');
-
-            $validator = Validator::make($data, [
-                'topic' => 'required|max:255|unique:questions',
-            ], $messages);
-
-            if ($validator->fails()) {
-                return redirect()->route('formChangeNameTopic', ['alias'=>$alias])->withErrors($validator)->withInput();
-            }
-
-            $new_name_topic = Question::where('alias', $alias)->get();
-            $data['alias'] = mb_strtolower($data['topic']);
-
-            foreach ($new_name_topic as $value) {
-                $value->topic = $data['topic'];
-                $value->alias = $data['alias'];
-                $value->save();
-            }
-
-            return redirect()->route('topics')->with('status', 'Название темы обновлено!');
+        return redirect()->route('topics')->with('status', 'Название темы обновлено!');
     }
 
     /**
@@ -154,12 +132,11 @@ class TopicsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($alias)
+    public function destroy($id)
     {
         //
-        $result = DB::table('questions')->where('alias', $alias)->delete();
-        if ($result) {
-            return redirect()->route('topics')->with('status', "Тема $alias удалена!");
-        }
+        Question::sameTopicId($id)->delete();
+        Topic::sameId($id)->delete();
+        return redirect()->route('topics')->with('status', "Тема c id = $id удалена!");
     }
 }

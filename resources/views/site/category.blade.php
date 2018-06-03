@@ -38,34 +38,34 @@
 	        	<tr>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['id'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<a href="{{ route('formChangeTopic', ['topic' => $item['id'] ]) }}">{{ $item['topic'] }}</a>
+	        			<a href="{{ route('formChangeTopic', ['id' => $item['id'] ]) }}">{{ $item['topic'] }}</a>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<a href="{{ route('formChangeQuestion', ['topic' => $item['id'] ]) }}">{{ $item['question'] }}</a>
+	        			<a href="{{ route('formChangeQuestion', ['id' => $item['id'] ]) }}">{{ $item['question'] }}</a>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<a href="{{ route('formChangeAnswer', ['topic' => $item['id'] ]) }}">{{ $item['answer'] }}</a>
+	        			<a href="{{ route('formChangeAnswer', ['id' => $item['id'] ]) }}">{{ $item['answer'] }}</a>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['answer_created_at'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['status'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<form method="POST" action="{{ route('deleteQuestion', ['topic' => $item['id'] ]) }}">
+	        			<form method="POST" action="{{ route('deleteQuestion', ['id' => $item['id'] ]) }}">
 	        				@method('DELETE')
 							@csrf
-							<input type="hidden" name="topic" value="{{ $item['topic'] }}">
+							<input type="hidden" name="topic" value="{{ $item['topic_id'] }}">
 							<input type="submit" name="action" value="Delete">
 						</form>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
 	        			@if( $item['change_status'] == 'Hide' || $item['change_status'] == 'Public' )
-		        			<form method="POST" action="{{ route('changeStatus', ['topic' => $item['id'] ]) }}">
+		        			<form method="POST" action="{{ route('changeStatus', ['id' => $item['id'] ]) }}">
 		        				@method('PUT')
 								@csrf
-								<input type="hidden" name="topic" value="{{ $item['topic'] }}">
+								<input type="hidden" name="topic" value="{{ $item['topic_id'] }}">
 								<input type="submit" name="action" value="{{ $item['change_status'] }}">
 							</form>
 						@elseif( $item['change_status'] == 'Answer' )
-							<a style="color: green;" href="{{ route('formAnswer', ['topic' => $item['id'] ]) }}">{{ $item['change_status'] }}</a>
+							<a style="color: green;" href="{{ route('formAnswer', ['id' => $item['id'] ]) }}">{{ $item['change_status'] }}</a>
 						@endif
 	        		</td>
 	        	</tr>

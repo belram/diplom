@@ -26,17 +26,19 @@
 		<table style="border: 1px solid black; border-collapse: collapse; margin-top: 15px">
 			<tr style="border: 1px solid black; border-collapse: collapse; padding: 5px">
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Name</td>
+				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Login</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Email</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Change password</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Delete Admin</td>
 			</tr>
 	        @foreach($data as $admin)
 	        	<tr>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $admin['name'] }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $admin['email'] }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('formChangePassword', ['id' => $admin['id'] ]) }}">Change password</a></td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $admin->name }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $admin->login }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $admin->email }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('formChangePassword', ['id' => $admin->id ]) }}">Change password</a></td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-						<form method="POST" action="{{ route('deleteAdmin', ['id' => $admin['id'] ]) }}">
+						<form method="POST" action="{{ route('deleteAdmin', ['id' => $admin->id ]) }}">
 							@method('DELETE')
 							@csrf
 							<input type="submit" name="delete" value="Delete">

@@ -26,4 +26,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function questions()
+    {
+        return $this->hasMany('App\Question');
+    }
+
+    public function scopeExceptAuthenticated($query, $id)
+    {
+        return $query->where('id', '!=', $id);
+    }
+
 }

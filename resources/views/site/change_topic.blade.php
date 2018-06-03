@@ -33,16 +33,17 @@
 		@endif
 		<form method="POST" action="{{ route('saveChangeTopic') }}">
 			@csrf
-			<input type="hidden" name="topic_id" value="{{ $topic_id }}">
+			<input type="hidden" name="question_id" value="{{ $question_id }}">
+			<input type="hidden" name="lastTopic" value="{{ $lastTopic }}">
 			<label>Topic:<br>
 				@foreach($topics as $topic)
-					<input id="topic" type="radio" name="topic" value="{{ $topic }}">{{ $topic }}<br>
+					<input id="topic" type="radio" name="topic" value="{{ $topic->id }}">{{ $topic->topic }}<br>
 				@endforeach
 			</label>
 			<br>
 			<input type="submit" name="save" value="Change topic">
 		</form>
 	@endif
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['topic' => $lastTopic]) }}">Back</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['id' => $lastTopic]) }}">Back</a>
 </div>
 @endsection

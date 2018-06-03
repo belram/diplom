@@ -40,35 +40,24 @@ class AnswerController extends Controller
     {
         //
         $temp = $request->except('_token');
-
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению'
         ];
-
         $validator = Validator::make($temp, [
             'answer' => 'required'
         ], $messages);
-
         if ($validator->fails()) {
             return redirect()->route('formAnswer', ['topic' =>  $temp['topic']])->withErrors($validator)->withInput();
         }
-
+        $temp['action'] = ($temp['action'] == 'Save and hide') ? 3 : 2;
         $new_answer = Question::find($temp['topic']);
-        $current_topic = $new_answer->topic;            
+        $new_answer->fill([
+            'answer' => $temp['answer'],
+            'answer_created_at' => date('Y-m-d H:i:s'),
+            'status' => $temp['action']
+        ])->save();
 
-        $new_answer->answer = $temp['answer'];
-        $new_answer->answer_created_at = date('Y-m-d H:i:s');
-        $new_answer->author_answer = Auth::user()->name;
-
-        if ($temp['action'] == 'Save and hide') {
-            $new_answer->status = 3;
-        }else{
-            $new_answer->status = 2;
-        }
-
-        if ($new_answer->save()) {
-            return redirect()->route('category', ['topic' => $current_topic])->with('status', 'Ваш ответ добавлен!');
-        }
+        return redirect()->route('category', ['topic' => $new_answer->topic_id])->with('status', 'Ваш ответ добавлен!');
     }
 
     /**
@@ -88,13 +77,14 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($topic)
+    public function edit($id)
     {
         //
         $question = [];
-        $result = Question::find($topic);
+        $result = Question::find($id);
         $question['question'] = $result->question;
-        $question['question_id'] = $topic;
+        $question['question_id'] = $id;
+        $question['lastTopic'] = $result->topic_id;
 
         return view('site.answer', compact('question'));
     }

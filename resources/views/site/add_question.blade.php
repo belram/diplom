@@ -23,8 +23,8 @@
 		</label>
 		<br>
 		<label style="font-weight: bold">Topic:<br>
-			@foreach($topics as $topic)
-				<input id="topic" type="radio" name="topic" value="{{ $topic }}">{{ $topic }}<br>
+			@foreach($topics as $value)
+					<input id="topic" type="radio" name="topic" value="{{ $value->topic }}">{{ $value->topic }}<br>	
 			@endforeach
 		</label>
 		<br>

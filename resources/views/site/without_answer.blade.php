@@ -33,12 +33,12 @@
 			</tr>
 	        @foreach($data as $question)
 	        	<tr>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question['id'] }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question['topic'] }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('formChangeQuestionW', ['id' => $question['id']]) }}">{{ $question['question'] }}</a></td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question['question_created_at'] }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->id }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->topic }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('formChangeQuestionW', ['id' => $question->id]) }}">{{ $question->question }}</a></td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->question_created_at }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-						<form method="POST" action="{{ route('deleteQuestionW', ['id' => $question['id'] ]) }}">
+						<form method="POST" action="{{ route('deleteQuestionW', ['id' => $question->id ]) }}">
 							@method('DELETE')
 							@csrf
 							<input type="submit" name="delete" value="Delete">

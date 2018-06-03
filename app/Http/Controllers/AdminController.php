@@ -23,10 +23,7 @@ class AdminController extends Controller
         //
 
         $auth_admin = Auth::user()->id;
-
-        $data = User::where('id', '!=',  $auth_admin)->get()->toArray();
-
-        //dd($data);
+        $data = User::exceptAuthenticated($auth_admin)->get();
 
         return view('site.administrators', compact('data'));
 
@@ -72,12 +69,8 @@ class AdminController extends Controller
             return redirect()->route('formAddAdmin')->withErrors($validator);
         }
 
-        User::create([
-        'name' => $data['name'],
-        'login' => $data['login'],
-        'email' => $data['email'],
-        'password' => Hash::make($data['password'])
-        ]);
+        $data['password'] = Hash::make($data['password']);
+        User::create($data);
 
         return redirect()->route('admins')->with('status', 'Администратор добавлен!');
     }
@@ -121,12 +114,10 @@ class AdminController extends Controller
     {
         //
         $data = $request->except('_token');
-
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению',
             'min'=>'Значение поля :attribute должно быть более 5 символов'
         ];
-
         $validator = Validator::make($data, [
             'password' => 'required|min:5'
         ], $messages);
@@ -134,14 +125,11 @@ class AdminController extends Controller
         if ($validator->fails()) {
             return redirect()->route('formChangePassword', ['id' => $id])->withErrors($validator);
         }
-
         $admin = User::find($id);
-
         $admin->password = Hash::make($data['password']);
+        $admin->save();
 
-        if ($admin->save()) {
-            return redirect()->route('admins')->with('status', 'Пароль изменен!');
-        }
+        return redirect()->route('admins')->with('status', 'Пароль изменен!');
     }
 
     /**
@@ -153,9 +141,6 @@ class AdminController extends Controller
     public function destroy($id)
     {
         $result = User::find($id)->delete();
-
-        if ($result) {
-            return redirect()->route('admins')->with('status', "Администратор удален!");
-        }
+        return redirect()->route('admins')->with('status', "Администратор удален!");
     }
 }

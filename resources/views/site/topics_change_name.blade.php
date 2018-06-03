@@ -24,7 +24,7 @@
     </div>
 </div>
 <div>
-	@if(isset($alias))
+	@if(isset($topic))
 			@if (count($errors) > 0)
 			    <div class="alert alert-danger">
 			        <ul>
@@ -34,16 +34,20 @@
 			        </ul>
 			    </div>
 			@endif
-			<form style="margin-top: 20px" method="POST" action="{{ route('saveNewNameTopic', ['alias' => $alias]) }}">
-				@method('PUT')
-				@csrf
-				<h4>Old Name: {{ ucwords($alias) }}</h4>
-				New name topic: <input id="topic"  type="text" name="topic" value="{{ old('topic') }}">
-				<br>
-				<br>
-				<input type="submit" name="save" value="Save">
-			</form>
-			<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('topics') }}">Back</a>
+
+			@foreach($topic as $value)
+				<form style="margin-top: 20px" method="POST" action="{{ route('saveNewNameTopic', ['id' => $value->id]) }}">
+					@method('PUT')
+					@csrf
+					<h4>Old Name: {{ ucwords($value->topic) }}</h4>
+					New name topic: <input id="topic"  type="text" name="topic" value="{{ old('topic') }}">
+					<br>
+					<br>
+					<input type="submit" name="save" value="Save">
+				</form>
+				<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('topics') }}">Back</a>
+			@endforeach
+
 	@endif
 </div>
 @endsection

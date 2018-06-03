@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Question;
+use App\Topic;
 use DB;
 use Validator;
 
@@ -39,30 +40,20 @@ class TopicCategoryController extends Controller
     public function store(Request $request)
     {
         //
-        $temp = $request->except('_token', 'save');
 
+        $temp = $request->except('_token', 'save');
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению'
         ];
-
         $validator = Validator::make($temp, [
             'topic' => 'required'
         ], $messages);
-
         if ($validator->fails()) {
-            return redirect()->route('formChangeTopic', ['topic' => $temp['topic_id'] ])->withErrors($validator)->withInput();
+            return redirect()->route('formChangeTopic', ['id' => $temp['question_id'] ])->withErrors($validator);
         }
+        Question::sameId($temp['question_id'])->update(['topic_id' => $temp['topic']]);
 
-        $new_topic_name = Question::find($temp['topic_id']);
-
-        $current_topic = $new_topic_name->topic;
-
-        $new_topic_name->topic = $temp['topic'];
-        $new_topic_name->alias = strtolower($temp['topic']);
-
-        if ($new_topic_name->save()) {
-            return redirect()->route('category', ['topic' => $current_topic])->with('status', 'Тема вопроса изменена!');
-        }
+        return redirect()->route('category', ['id' => $temp['lastTopic']])->with('status', 'Тема вопроса изменена!');
     }
 
     /**
@@ -71,18 +62,20 @@ class TopicCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($topic)
+    public function show($id)
     {
         //
-        $data = Question::where([['topic', "$topic"], ['status', '>', 0]])->get()->toArray();
 
+        $data = Topic::find($id)->questions()->get()->toArray();
+        $result = Topic::find($id);
         foreach ($data as $key => $value) {
+            $data[$key]['topic'] = $result->topic;
+            $data[$key]['alias'] = $result->alias;
             if (is_null( $value['answer'])) {
                 $data[$key]['answer'] = '';
                 $data[$key]['status'] = 'No answer';
                 $data[$key]['change_status'] = 'Answer';
             }
-
             if ( $value['status'] == 2) {
                 $data[$key]['status'] = 'Published';
                 $data[$key]['change_status'] = 'Hide';
@@ -93,7 +86,6 @@ class TopicCategoryController extends Controller
         }
 
         return view('site.category', compact('data'));
-
     }
 
     /**
@@ -102,22 +94,14 @@ class TopicCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($topic)
+    public function edit($id)
     {
         //
-        $result = Question::distinct()->get(['topic'])->toArray();
+        $topics = Topic::get(['id','topic']);
+        $tmp = Question::find($id);
+        $lastTopic = $tmp->topic_id;
 
-        $tmp = Question::find($topic);
-
-        $lastTopic = $tmp->topic;
-
-        $topics = [];
-
-        foreach ($result as $value) {
-            $topics[] = $value['topic'];
-        }
-
-        return view('site.change_topic', ['topics' => $topics, 'topic_id' => $topic, 'lastTopic' => $lastTopic]);
+        return view('site.change_topic', ['topics' => $topics, 'question_id' => $id, 'lastTopic' => $lastTopic]);
     }
 
     /**
@@ -127,31 +111,18 @@ class TopicCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $topic)
+    public function update(Request $request, $id)
     {
         //
         $temp = $request->except('_token');
-
+        $question = Question::find($id);
         if ($temp['action'] == 'Hide') {
-
-            $change_status = Question::find($topic);
-
-            $change_status->status = 3;
-
-            if ($change_status->save()) {
-                return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $topic скрыт!");
-            }
+            $question->update(['status' => 3]);
+            return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id скрыт!");
         }
-
         if ($temp['action'] == 'Public') {
-
-            $change_status = Question::find($topic);
-
-            $change_status->status = 2;
-
-            if ($change_status->save()) {
-                return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $topic опубликован!");
-            }
+            $question->update(['status' => 2]);
+            return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id опубликован!");
         }
     }
 
@@ -161,15 +132,10 @@ class TopicCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $topic)
+    public function destroy(Request $request, $id)
     {
         //
-        $temp = $request->except('_token');
-
-        $result = Question::find($topic)->delete();
-
-        if ($result) {
-            return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос удален!");
-        }
+        Question::find($id)->delete();
+        return redirect()->route('category', ['id'=>$request->topic])->with('status', "Вопрос удален!");
     }
 }

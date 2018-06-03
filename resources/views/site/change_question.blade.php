@@ -31,7 +31,7 @@
 		        </ul>
 		    </div>
 		@endif
-		<form style="margin-top: 20px;" method="POST" action="{{ route('saveChangeQuestion', ['topic' => $question['question_id'] ]) }}">
+		<form style="margin-top: 20px;" method="POST" action="{{ route('saveChangeQuestion', ['id' => $question['question_id'] ]) }}">
 			@method('PUT')
 			@csrf
 			<label>Change author question:<br>
@@ -45,6 +45,6 @@
 			<input type="submit" name="save" value="Change question">
 		</form>
 	@endif
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['topic' => $lastTopic]) }}">Back</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['id' => $lastTopic]) }}">Back</a>
 </div>
 @endsection

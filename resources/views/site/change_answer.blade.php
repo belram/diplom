@@ -34,7 +34,9 @@
 		<form style="margin-top: 20px;" method="POST" action="{{ route('saveChangeAnswer') }}">
 			@csrf
 			<input type="hidden" name="topic" value="{{ $answer['answer_id'] }}">
-			Change answer: <textarea id="answer" cols="120" rows="10" name="answer">{{ $answer['answer'] }}</textarea>
+			<label>Change answer: <br>
+				<textarea id="answer" cols="120" rows="10" name="answer">{{ $answer['answer'] }}</textarea>
+			</label>
 			<br>
 			<input type="submit" name="save" value="Change answer">
 		</form>

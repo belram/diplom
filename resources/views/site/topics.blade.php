@@ -32,19 +32,19 @@
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Published</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Hidden</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Total</td>
-				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Delete Topic</td>
+				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Delete Topic with all questions</td>
 			</tr>
 	        @foreach($data as $topic=>$item)
 	        	<tr>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['i'] }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('category', ['topic' => $topic]) }}">{{ $topic }}</a></td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('formChangeNameTopic', ['alias' => $item['alias'] ]) }}">Change</a></td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('category', ['id' => $item['id']]) }}">{{ $topic }}</a></td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('formChangeNameTopic', ['id' => $item['id'] ]) }}">Change</a></td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['wait'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['published'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['hidden'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['total'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-						<form method="POST" action="{{ route('deleteTopic', ['alias' => $item['alias'] ]) }}">
+						<form method="POST" action="{{ route('deleteTopic', ['id' => $item['id'] ]) }}">
 							@method('DELETE')
 							@csrf
 							<input type="submit" name="delete" value="Delete">

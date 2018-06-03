@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Question;
+use App\Topic;
 use DB;
 use Validator;
 
@@ -18,12 +19,13 @@ class WithoutAnswerController extends Controller
     public function index()
     {
         //
-        $data = Question::where([['question', '!=', NULL], ['answer', NULL]])
-                ->orderBy('question_created_at')
-                ->get(['id', 'topic' , 'question', 'question_created_at']
-            )->toArray();
+        $data = DB::table('topics')->leftJoin('questions', 'topics.id', '=', 'questions.topic_id')
+            ->where([['answer', NULL], ['question', '!=', NULL]])
+            ->orderBy('question_created_at')
+            ->get(['questions.id','topic', 'question', 'question_created_at']);
 
         return view('site.without_answer', compact('data'));
+
     }
 
     /**
@@ -90,26 +92,22 @@ class WithoutAnswerController extends Controller
 
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению',
-            'maX'=>'Значение поля :attribute должно быть меннее 255 символов'
+            'maX'=>'Значение поля :attribute должно быть меннее 150 символов'
         ];
-
         $validator = Validator::make($temp, [
             'question' => 'required',
-            'author_name' => 'required|max:255'
+            'author_name' => 'required|max:150'
         ], $messages);
-
         if ($validator->fails()) {
             return redirect()->route('formChangeQuestionW', ['id' => $id])->withErrors($validator);
         }
-
         $new_question = Question::find($id);
-        $new_question->question = $temp['question'];
-        $new_question->author_question = $temp['author_name'];
-
-        if ($new_question->save()) {
-            return redirect()->route('allQuestionsW')->with('status', "Вопрос с id = $id изменен!");
-        }
-
+        $new_question->fill([
+            'question' => $temp['question'],
+            'author_question' => $temp['author_name']
+        ])->save();
+        
+        return redirect()->route('allQuestionsW')->with('status', "Вопрос с id = $id изменен!");
     }
 
     /**
@@ -122,8 +120,6 @@ class WithoutAnswerController extends Controller
     {
         //
         $result = Question::find($id)->delete();
-        if ($result) {
-            return redirect()->route('allQuestionsW')->with('status', "Вопрос с id = $id удален!");
-        }
+        return redirect()->route('allQuestionsW')->with('status', "Вопрос с id = $id удален!");
     }
 }

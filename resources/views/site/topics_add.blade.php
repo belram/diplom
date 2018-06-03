@@ -38,7 +38,7 @@
 		<br>
 		<input type="submit" name="save" value="Save">
 	</form>
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('admin_index') }}">Back</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('topics') }}">Back</a>
 </div>
 @endsection
    

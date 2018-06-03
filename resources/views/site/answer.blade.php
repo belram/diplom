@@ -36,13 +36,15 @@
 		    </div>
 		@endif
 		<div>
-			<p style="margin: 10px 0px;">Question: <span style="color: green;">{{ $question['question'] }}</span></p>
+			<p style="margin: 10px 0px;">Question: <span style="color: blue;">{{ $question['question'] }}</span></p>
 		</div>
 		<div>
 				<form method="POST" action="{{ route('saveAnswer') }}">
 					@csrf
 					<input type="hidden" name="topic" value="{{ $question['question_id'] }}">
-					Your answer: <textarea id="answer" cols="50" rows="5" name="answer">{{ old('answer') }}</textarea>
+					<label>Your answer:<br>
+					<textarea id="answer" cols="100" rows="5" name="answer">{{ old('answer') }}</textarea>
+					</label>
 					<br>
 					<input type="submit" name="action" value="Save and hide">
 					<br>
@@ -50,7 +52,7 @@
 				</form>
 		</div>
 	@endif
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('topics') }}">Back</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['id' => $question['lastTopic']]) }}">Back</a>
 </div>
 @endsection
    

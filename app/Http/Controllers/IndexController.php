@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Question;
+use App\Topic;
+use DB;
 use Validator;
 
 class IndexController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,19 +20,17 @@ class IndexController extends Controller
     public function index()
     {
         //
-        $titles = Question::where([['question','!=', NULL], ['answer','!=', NULL], ['status', 2]])->distinct()->get(['alias'])->toArray();
 
-        $pages = [];
-
-        foreach ($titles as $value) {
-            $pages[] = $value['alias'];
-        }
-
+        $pages = DB::table('topics')->leftJoin('questions', 'topics.id', '=', 'questions.topic_id')
+                    ->where('status', 2)
+                    ->distinct()
+                    ->get(['topic_id','topic', 'alias']);
         $data = [];
-
         foreach ($pages as $value) {
-            $data[$value] = Question::where([['alias', "$value"], ['status', 2]])
-                ->get(['topic' ,'alias', 'question', 'answer'])->toArray();
+            $temp = Topic::find($value->topic_id)->questions->where('status', 2);
+            if ($temp->count() > 0) {
+                $data[$value->alias] = $temp->values(['question', 'answer']);
+            }
         }
 
         return view('site.index', compact('pages', 'data'));
@@ -43,14 +44,7 @@ class IndexController extends Controller
      */
     public function create()
     {
-        //
-        $result = Question::distinct()->get(['topic'])->toArray();
-        $topics = [];
-
-        foreach ($result as $value) {
-            $topics[] = $value['topic'];
-        }
-
+        $topics = Topic::get(['topic']);
         return view('site.add_question', compact('topics'));
     }
 
@@ -63,49 +57,33 @@ class IndexController extends Controller
     public function store(Request $request)
     {
         //
-            $messages = [
-                'required'=>'Поле :attribute обязательно к заполнению',
-                'email'=>'Поле :attribute должно соответствовать email адресу',
-                'maX'=>'Значение поля :attribute должно быть меннее 255 символов'
-            ];
+        $messages = [
+            'required'=>'Поле :attribute обязательно к заполнению',
+            'email'=>'Поле :attribute должно соответствовать email адресу',
+            'maX'=>'Значение поля :attribute должно быть меннее 255 символов'
+        ];
 
-            $data = $request->except('_token', 'save');
-            $validator = Validator::make($data, [
-                'name' => 'required|max:255',
-                'email' => 'required|email',
-                'topic' => 'required',
-                'question' => 'required'
-            ], $messages);
+        $data = $request->except('_token', 'save');
+        $validator = Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'topic' => 'required',
+            'question' => 'required'
+        ], $messages);
+        if ($validator->fails()) {
+            return redirect()->route('create')->withErrors($validator)->withInput();
+        }
+        $topic = Topic::sameTopic($data['topic'])->get(['id']);
+        $aaa = Question::create([
+                'question' => $data['question'],
+                'author_question' => $data['name'],
+                'author_email' => $data['email'],
+                'question_created_at' => date('Y-m-d H:i:s'),
+                'status' => 1,
+                'topic_id' => $topic[0]->id
+                ]);
 
-            if ($validator->fails()) {
-                return redirect()->route('add_question')->withErrors($validator)->withInput();
-            }
-
-            if ($empty_place = Question::where([['topic', $data['topic']], ['question', NULL]])->first()) {
-                $empty_place->question = $data['question'];
-                $empty_place->author_question = $data['name'];
-                $empty_place->author_email = $data['email'];
-                $empty_place->status = 1;
-                $empty_place->question_created_at = date('Y-m-d H:i:s');
-
-                if ($empty_place->save()) {
-                    return redirect()->route('index')->with('status', 'Ваш вопрос добавлен!');
-                }
-
-            } else {
-
-                Question::create([
-                        'topic' => $data['topic'],
-                        'alias' => mb_strtolower($data['topic']),
-                        'question' => $data['question'],
-                        'author_question' => $data['name'],
-                        'author_email' => $data['email'],
-                        'question_created_at' => date('Y-m-d H:i:s'),
-                        'status' => 1
-                        ]);
-
-                return redirect()->route('index')->with('status', 'Ваш вопрос добавлен!');
-            }
+        return redirect()->route('index')->with('status', 'Ваш вопрос добавлен!');
     }
 
     /**

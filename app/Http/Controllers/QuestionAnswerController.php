@@ -40,29 +40,20 @@ class QuestionAnswerController extends Controller
     {
         //
         $temp = $request->except('_token', 'save');
-
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению'
         ];
-
         $validator = Validator::make($temp, [
             'answer' => 'required'
         ], $messages);
-
         if ($validator->fails()) {
-            return redirect()->route('formChangeAnswer', ['topic' => $temp['topic']])->withErrors($validator);
+            return redirect()->route('formChangeAnswer', ['id' => $temp['topic']])->withErrors($validator);
         }
-
         $new_answer = Question::find($temp['topic']);
-
-        $current_topic = $new_answer->topic;
-
         $new_answer->answer = $temp['answer'];
+        $new_answer->save();
 
-        if ($new_answer->save()) {
-            return redirect()->route('category', ['topic' => $current_topic])->with('status', "Ответ с id = {$temp['topic']} изменен!");
-        }
-
+        return redirect()->route('category', ['id' => $new_answer->topic_id])->with('status', "Ответ с id = {$temp['topic']} изменен!");
     }
 
     /**
@@ -71,17 +62,16 @@ class QuestionAnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($topic)
+    public function show($id)
     {
         //
         $answer = [];
-        $result = Question::find($topic); 
+        $result = Question::find($id); 
         $answer['answer'] = $result->answer;
-        $lastTopic = $result->topic;
-        $answer['answer_id'] = $topic;
-
+        $answer['answer_id'] = $id;
+        $lastTopic = $result->topic_id;
+        
         return view('site.change_answer',  compact('answer', 'lastTopic'));
-
     }
 
     /**
@@ -90,16 +80,15 @@ class QuestionAnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($topic)
+    public function edit($id)
     {
         //
         $question = [];
-        $result = Question::find($topic);
+        $result = Question::find($id);
         $question['question'] = $result->question;
         $question['author'] = $result->author_question;
-
-        $lastTopic = $result->topic;
-        $question['question_id'] = $topic;
+        $question['question_id'] = $id;
+        $lastTopic = $result->topic_id;
 
         return view('site.change_question', compact('question', 'lastTopic'));
     }
@@ -111,35 +100,25 @@ class QuestionAnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $topic)
+    public function update(Request $request, $id)
     {
         //
         $temp = $request->except('_token', 'save');
-
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению',
             'maX'=>'Значение поля :attribute должно быть меннее 255 символов'
         ];
-
         $validator = Validator::make($temp, [
             'question' => 'required',
             'author_name' => 'required|max:255'
         ], $messages);
-
         if ($validator->fails()) {
-            return redirect()->route('formChangeQuestion', ['topic' => $topic ])->withErrors($validator);
+            return redirect()->route('formChangeQuestion', ['topic' => $id])->withErrors($validator);
         }
+        $question = Question::find($id);
+        $question->update(['question' => $temp['question'], 'author_question' => $temp['author_name']]);
 
-        $new_question = Question::find($topic);
-
-        $current_topic = $new_question->topic;
-
-        $new_question->question = $temp['question'];
-        $new_question->author_question = $temp['author_name'];
-
-        if ($new_question->save()) {
-            return redirect()->route('category', ['topic' => $current_topic])->with('status', "Вопрос с id = $topic изменен!");
-        } 
+        return redirect()->route('category', ['id' => $question->topic_id])->with('status', "Вопрос с id = $id изменен!");
     }
 
     /**
