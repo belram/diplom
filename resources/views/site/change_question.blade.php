@@ -13,9 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
-                        <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>  
+                        <a style="color: blue; padding-left: 15px" href="{{ route('administrators.index') }}">Administrators</a>
+                        <a style="color: red; padding-left: 40px" href="{{ route('changes.index') }}">Topics</a>
+                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer.index') }}">All questions without answers</a>  
             </div>
         </div>
     </div>
@@ -31,20 +31,20 @@
 		        </ul>
 		    </div>
 		@endif
-		<form style="margin-top: 20px;" method="POST" action="{{ route('saveChangeQuestion', ['id' => $question['question_id'] ]) }}">
+		<form style="margin-top: 20px;" method="POST" action="{{ route('question_answer.update', ['id' => $question->id ]) }}">
 			@method('PUT')
 			@csrf
 			<label>Change author question:<br>
-				<textarea id="author_name" cols="8" rows="2" name="author_name">{{ $question['author'] }}</textarea>
+				<textarea id="author_name" cols="8" rows="2" name="author_name">{{ $question->author_question }}</textarea>
 			</label>
 			<br>
 			<label>Change question:<br>
-				<textarea id="question" cols="100" rows="5" name="question">{{ $question['question'] }}</textarea>
+				<textarea id="question" cols="100" rows="5" name="question">{{ $question->question }}</textarea>
 			</label>
 			<br>
 			<input type="submit" name="save" value="Change question">
 		</form>
 	@endif
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['id' => $lastTopic]) }}">Back</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category.show', ['id' => $question->topic_id]) }}">Back</a>
 </div>
 @endsection

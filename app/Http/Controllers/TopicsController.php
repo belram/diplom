@@ -54,25 +54,22 @@ class TopicsController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->except('_token', 'save');
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению',
             'max'=>'Поле :attribute должно быть не более 100 символов',
             'unique'=>'Поле :attribute должно быть уникальным'
         ];
-        $data = $request->except('_token', 'save');
         $validator = Validator::make($data, [
             'topic' => 'required|max:100|unique:topics',
         ], $messages);
         if ($validator->fails()) {
-            return redirect()->route('formTopicAdd')->withErrors($validator)->withInput();
+            return redirect()->route('changes.create')->withErrors($validator)->withInput();
         }
-        Topic::create([
-                'topic' => $data['topic'],
-                'alias' => mb_strtolower($data['topic'])
-            ]);
+        $data['alias'] = mb_strtolower($data['topic']);
+        Topic::create($data);
 
-        return redirect()->route('topics')->with('status', "Новая тема $request->topic добавлена!");
-
+        return redirect()->route('changes.index')->with('status', "Новая тема $request->topic добавлена!");
     }
 
     /**
@@ -119,11 +116,11 @@ class TopicsController extends Controller
             'topic' => 'required|max:255|unique:topics',
         ], $messages);
         if ($validator->fails()) {
-            return redirect()->route('formChangeNameTopic', ['id'=>$id])->withErrors($validator)->withInput();
+            return redirect()->route('changes.show', ['id'=>$id])->withErrors($validator)->withInput();
         }
         Topic::sameId($id)->update(['topic' => $data['topic'], 'alias' => mb_strtolower($data['topic'])]);
 
-        return redirect()->route('topics')->with('status', 'Название темы обновлено!');
+        return redirect()->route('changes.index')->with('status', 'Название темы обновлено!');
     }
 
     /**
@@ -137,6 +134,6 @@ class TopicsController extends Controller
         //
         Question::sameTopicId($id)->delete();
         Topic::sameId($id)->delete();
-        return redirect()->route('topics')->with('status', "Тема c id = $id удалена!");
+        return redirect()->route('changes.index')->with('status', "Тема c id = $id удалена!");
     }
 }

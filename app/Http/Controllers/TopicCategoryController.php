@@ -40,7 +40,6 @@ class TopicCategoryController extends Controller
     public function store(Request $request)
     {
         //
-
         $temp = $request->except('_token', 'save');
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению'
@@ -49,11 +48,11 @@ class TopicCategoryController extends Controller
             'topic' => 'required'
         ], $messages);
         if ($validator->fails()) {
-            return redirect()->route('formChangeTopic', ['id' => $temp['question_id'] ])->withErrors($validator);
+            return redirect()->route('category.edit', ['id' => $temp['question_id'] ])->withErrors($validator);
         }
         Question::sameId($temp['question_id'])->update(['topic_id' => $temp['topic']]);
 
-        return redirect()->route('category', ['id' => $temp['lastTopic']])->with('status', 'Тема вопроса изменена!');
+        return redirect()->route('category.show', ['id' => $temp['lastTopic']])->with('status', 'Тема вопроса изменена!');
     }
 
     /**
@@ -65,7 +64,6 @@ class TopicCategoryController extends Controller
     public function show($id)
     {
         //
-
         $data = Topic::find($id)->questions()->get()->toArray();
         $result = Topic::find($id);
         foreach ($data as $key => $value) {
@@ -98,10 +96,8 @@ class TopicCategoryController extends Controller
     {
         //
         $topics = Topic::get(['id','topic']);
-        $tmp = Question::find($id);
-        $lastTopic = $tmp->topic_id;
-
-        return view('site.change_topic', ['topics' => $topics, 'question_id' => $id, 'lastTopic' => $lastTopic]);
+        $question = Question::find($id);
+        return view('site.change_topic', compact('topics', 'question'));
     }
 
     /**
@@ -118,11 +114,11 @@ class TopicCategoryController extends Controller
         $question = Question::find($id);
         if ($temp['action'] == 'Hide') {
             $question->update(['status' => 3]);
-            return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id скрыт!");
+            return redirect()->route('category.show', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id скрыт!");
         }
         if ($temp['action'] == 'Public') {
             $question->update(['status' => 2]);
-            return redirect()->route('category', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id опубликован!");
+            return redirect()->route('category.show', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id опубликован!");
         }
     }
 
@@ -136,6 +132,6 @@ class TopicCategoryController extends Controller
     {
         //
         Question::find($id)->delete();
-        return redirect()->route('category', ['id'=>$request->topic])->with('status', "Вопрос удален!");
+        return redirect()->route('category.show', ['id'=>$request->topic])->with('status', "Вопрос удален!");
     }
 }

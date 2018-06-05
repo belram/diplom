@@ -39,7 +39,7 @@ class AnswerController extends Controller
     public function store(Request $request)
     {
         //
-        $temp = $request->except('_token');
+        $temp = $request->except('_token', 'id');
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению'
         ];
@@ -47,17 +47,13 @@ class AnswerController extends Controller
             'answer' => 'required'
         ], $messages);
         if ($validator->fails()) {
-            return redirect()->route('formAnswer', ['topic' =>  $temp['topic']])->withErrors($validator)->withInput();
+            return redirect()->route('answer.edit', ['topic' =>  $request->id])->withErrors($validator)->withInput();
         }
-        $temp['action'] = ($temp['action'] == 'Save and hide') ? 3 : 2;
-        $new_answer = Question::find($temp['topic']);
-        $new_answer->fill([
-            'answer' => $temp['answer'],
-            'answer_created_at' => date('Y-m-d H:i:s'),
-            'status' => $temp['action']
-        ])->save();
-
-        return redirect()->route('category', ['topic' => $new_answer->topic_id])->with('status', 'Ваш ответ добавлен!');
+        $temp['status'] = ($temp['status'] == 'Save and hide') ? 3 : 2;
+        $temp['answer_created_at'] = date('Y-m-d H:i:s');
+        $new_answer = Question::find($request->id);
+        $new_answer->update($temp);
+        return redirect()->route('category.show', ['topic' => $new_answer->topic_id])->with('status', 'Ваш ответ добавлен!');
     }
 
     /**
@@ -80,12 +76,7 @@ class AnswerController extends Controller
     public function edit($id)
     {
         //
-        $question = [];
-        $result = Question::find($id);
-        $question['question'] = $result->question;
-        $question['question_id'] = $id;
-        $question['lastTopic'] = $result->topic_id;
-
+        $question = Question::find($id);
         return view('site.answer', compact('question'));
     }
 

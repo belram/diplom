@@ -13,9 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
-                        <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>   
+                        <a style="color: blue; padding-left: 15px" href="{{ route('administrators.index') }}">Administrators</a>
+                        <a style="color: red; padding-left: 40px" href="{{ route('changes.index') }}">Topics</a>
+                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer.index') }}">All questions without answers</a>   
             </div>
         </div>
     </div>
@@ -36,9 +36,9 @@
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $admin->name }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $admin->login }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $admin->email }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('formChangePassword', ['id' => $admin->id ]) }}">Change password</a></td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('administrators.show', ['id' => $admin->id ]) }}">Change password</a></td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-						<form method="POST" action="{{ route('deleteAdmin', ['id' => $admin->id ]) }}">
+						<form method="POST" action="{{ route('administrators.destroy', ['id' => $admin->id ]) }}">
 							@method('DELETE')
 							@csrf
 							<input type="submit" name="delete" value="Delete">
@@ -48,7 +48,7 @@
 	        @endforeach
 		</table>
 	@endif
-	<a style="display: block; font-size: 15px; font-weight: bold; color: purple; margin-top: 20px;" href="{{ route('formAddAdmin') }}">Add admin</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: purple; margin-top: 20px;" href="{{ route('administrators.create') }}">Add admin</a>
 	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('admin_index') }}">Back</a>
 </div>
 @endsection

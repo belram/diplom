@@ -13,9 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
-                        <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a> 
+                        <a style="color: blue; padding-left: 15px" href="{{ route('administrators.index') }}">Administrators</a>
+                        <a style="color: red; padding-left: 40px" href="{{ route('changes.index') }}">Topics</a>
+                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer.index') }}">All questions without answers</a> 
             </div>
         </div>
     </div>
@@ -35,10 +35,10 @@
 	        	<tr>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->id }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->topic }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('formChangeQuestionW', ['id' => $question->id]) }}">{{ $question->question }}</a></td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('withoutAnswer.show', ['id' => $question->id]) }}">{{ $question->question }}</a></td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->question_created_at }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-						<form method="POST" action="{{ route('deleteQuestionW', ['id' => $question->id ]) }}">
+						<form method="POST" action="{{ route('withoutAnswer.destroy', ['id' => $question->id ]) }}">
 							@method('DELETE')
 							@csrf
 							<input type="submit" name="delete" value="Delete">

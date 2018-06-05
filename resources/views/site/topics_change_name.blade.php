@@ -13,11 +13,11 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
+                        <a style="color: blue; padding-left: 15px" href="{{ route('administrators.index') }}">Administrators</a>
                         
-                        <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
+                        <a style="color: red; padding-left: 40px" href="{{ route('changes.index') }}">Topics</a>
                         
-                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>
+                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer.index') }}">All questions without answers</a>
                         
             </div>
         </div>
@@ -36,7 +36,7 @@
 			@endif
 
 			@foreach($topic as $value)
-				<form style="margin-top: 20px" method="POST" action="{{ route('saveNewNameTopic', ['id' => $value->id]) }}">
+				<form style="margin-top: 20px" method="POST" action="{{ route('changes.update', ['id' => $value->id]) }}">
 					@method('PUT')
 					@csrf
 					<h4>Old Name: {{ ucwords($value->topic) }}</h4>
@@ -45,7 +45,7 @@
 					<br>
 					<input type="submit" name="save" value="Save">
 				</form>
-				<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('topics') }}">Back</a>
+				<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('changes.index') }}">Back</a>
 			@endforeach
 
 	@endif

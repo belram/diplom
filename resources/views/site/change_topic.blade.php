@@ -13,9 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
-                        <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>
+                        <a style="color: blue; padding-left: 15px" href="{{ route('administrators.index') }}">Administrators</a>
+                        <a style="color: red; padding-left: 40px" href="{{ route('changes.index') }}">Topics</a>
+                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer.index') }}">All questions without answers</a>
             </div>
         </div>
     </div>
@@ -31,10 +31,10 @@
 		        </ul>
 		    </div>
 		@endif
-		<form method="POST" action="{{ route('saveChangeTopic') }}">
+		<form method="POST" action="{{ route('category.store') }}">
 			@csrf
-			<input type="hidden" name="question_id" value="{{ $question_id }}">
-			<input type="hidden" name="lastTopic" value="{{ $lastTopic }}">
+			<input type="hidden" name="question_id" value="{{ $question->id }}">
+			<input type="hidden" name="lastTopic" value="{{ $question->topic_id }}">
 			<label>Topic:<br>
 				@foreach($topics as $topic)
 					<input id="topic" type="radio" name="topic" value="{{ $topic->id }}">{{ $topic->topic }}<br>
@@ -44,6 +44,6 @@
 			<input type="submit" name="save" value="Change topic">
 		</form>
 	@endif
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category', ['id' => $lastTopic]) }}">Back</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('category.show', ['id' => $question->topic_id]) }}">Back</a>
 </div>
 @endsection

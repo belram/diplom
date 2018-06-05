@@ -21,12 +21,9 @@ class AdminController extends Controller
     public function index()
     {
         //
-
         $auth_admin = Auth::user()->id;
         $data = User::exceptAuthenticated($auth_admin)->get();
-
         return view('site.administrators', compact('data'));
-
     }
 
     /**
@@ -50,29 +47,25 @@ class AdminController extends Controller
     {
         //
         $data = $request->except('_token');
-
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению',
             'email'=>'Поле :attribute должно соответствовать email адресу',
             'max'=>'Значение поля :attribute должно быть меннее 255 символов',
             'min'=>'Значение поля :attribute должно быть более 5 символов'
         ];
-
         $validator = Validator::make($data, [
             'name' => 'required|max:255',
             'login' => 'required|max:255',
             'email' => 'required|email|max:255',
             'password' => 'required|min:5'
         ], $messages);
-
         if ($validator->fails()) {
-            return redirect()->route('formAddAdmin')->withErrors($validator);
+            return redirect()->route('administrators.create')->withErrors($validator);
         }
-
         $data['password'] = Hash::make($data['password']);
         User::create($data);
 
-        return redirect()->route('admins')->with('status', 'Администратор добавлен!');
+        return redirect()->route('administrators.index')->with('status', 'Администратор добавлен!');
     }
 
     /**
@@ -84,11 +77,7 @@ class AdminController extends Controller
     public function show($id)
     {
         //
-        $result = User::find($id);
-        $data = [];
-        $data['id'] = $id;
-        $data['login'] = $result->login;
-
+        $data = User::find($id);
         return view('site.admin_change_password', compact('data'));
     }
 
@@ -121,15 +110,12 @@ class AdminController extends Controller
         $validator = Validator::make($data, [
             'password' => 'required|min:5'
         ], $messages);
-
         if ($validator->fails()) {
-            return redirect()->route('formChangePassword', ['id' => $id])->withErrors($validator);
+            return redirect()->route('administrators.show', ['id' => $id])->withErrors($validator);
         }
-        $admin = User::find($id);
-        $admin->password = Hash::make($data['password']);
-        $admin->save();
+        User::find($id)->update(['password' => Hash::make($data['password'])]);
 
-        return redirect()->route('admins')->with('status', 'Пароль изменен!');
+        return redirect()->route('administrators.index')->with('status', 'Пароль изменен!');
     }
 
     /**
@@ -140,7 +126,7 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        $result = User::find($id)->delete();
-        return redirect()->route('admins')->with('status', "Администратор удален!");
+        User::find($id)->delete();
+        return redirect()->route('administrators.index')->with('status', "Администратор удален!");
     }
 }

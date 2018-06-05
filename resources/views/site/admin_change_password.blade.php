@@ -13,9 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <a style="color: blue; padding-left: 15px" href="{{ route('admins') }}">Administrators</a>
-                        <a style="color: red; padding-left: 40px" href="{{ route('topics') }}">Topics</a>
-                        <a style="color: green; padding-left: 40px" href="{{ route('allQuestionsW') }}">All questions without answers</a>
+                        <a style="color: blue; padding-left: 15px" href="{{ route('administrators.index') }}">Administrators</a>
+                        <a style="color: red; padding-left: 40px" href="{{ route('changes.index') }}">Topics</a>
+                        <a style="color: green; padding-left: 40px" href="{{ route('withoutAnswer.index') }}">All questions without answers</a>
             </div>
         </div>
     </div>
@@ -31,8 +31,8 @@
 		        </ul>
 		    </div>
 		@endif
-		<h3>New password for: {{ $data['login'] }}</h3>
-		<form style="margin-top: 20px;" method="POST" action="{{ route('saveNewPassword', ['id' => $data['id']]) }}">
+		<h3>New password for: {{ $data->login }}</h3>
+		<form style="margin-top: 20px;" method="POST" action="{{ route('administrators.update', ['id' => $data->id]) }}">
 			@method('PUT')
 			@csrf
 			<label>New Password:<br>
@@ -42,6 +42,6 @@
 			<input type="submit" name="save" value="Change password">
 		</form>
 	@endif
-	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('admins') }}">Back</a>
+	<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('administrators.index') }}">Back</a>
 </div>
 @endsection

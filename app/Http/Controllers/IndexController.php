@@ -20,7 +20,6 @@ class IndexController extends Controller
     public function index()
     {
         //
-
         $pages = DB::table('topics')->leftJoin('questions', 'topics.id', '=', 'questions.topic_id')
                     ->where('status', 2)
                     ->distinct()
@@ -34,7 +33,6 @@ class IndexController extends Controller
         }
 
         return view('site.index', compact('pages', 'data'));
-
     }
 
     /**
@@ -62,7 +60,6 @@ class IndexController extends Controller
             'email'=>'Поле :attribute должно соответствовать email адресу',
             'maX'=>'Значение поля :attribute должно быть меннее 255 символов'
         ];
-
         $data = $request->except('_token', 'save');
         $validator = Validator::make($data, [
             'name' => 'required|max:255',
@@ -74,14 +71,14 @@ class IndexController extends Controller
             return redirect()->route('create')->withErrors($validator)->withInput();
         }
         $topic = Topic::sameTopic($data['topic'])->get(['id']);
-        $aaa = Question::create([
+        Question::create([
                 'question' => $data['question'],
                 'author_question' => $data['name'],
                 'author_email' => $data['email'],
                 'question_created_at' => date('Y-m-d H:i:s'),
                 'status' => 1,
                 'topic_id' => $topic[0]->id
-                ]);
+            ]);
 
         return redirect()->route('index')->with('status', 'Ваш вопрос добавлен!');
     }

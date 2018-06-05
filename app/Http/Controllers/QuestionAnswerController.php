@@ -39,7 +39,7 @@ class QuestionAnswerController extends Controller
     public function store(Request $request)
     {
         //
-        $temp = $request->except('_token', 'save');
+        $temp = $request->except('id', '_token', 'save');
         $messages = [
             'required'=>'Поле :attribute обязательно к заполнению'
         ];
@@ -47,13 +47,12 @@ class QuestionAnswerController extends Controller
             'answer' => 'required'
         ], $messages);
         if ($validator->fails()) {
-            return redirect()->route('formChangeAnswer', ['id' => $temp['topic']])->withErrors($validator);
+            return redirect()->route('question_answer.show', ['id' => $request->id])->withErrors($validator);
         }
-        $new_answer = Question::find($temp['topic']);
-        $new_answer->answer = $temp['answer'];
-        $new_answer->save();
+        $new_answer = Question::find($request->id);
+        $new_answer->update($temp);
 
-        return redirect()->route('category', ['id' => $new_answer->topic_id])->with('status', "Ответ с id = {$temp['topic']} изменен!");
+        return redirect()->route('category.show', ['id' => $new_answer->topic_id])->with('status', "Ответ с id = $new_answer->id изменен!");
     }
 
     /**
@@ -65,13 +64,8 @@ class QuestionAnswerController extends Controller
     public function show($id)
     {
         //
-        $answer = [];
-        $result = Question::find($id); 
-        $answer['answer'] = $result->answer;
-        $answer['answer_id'] = $id;
-        $lastTopic = $result->topic_id;
-        
-        return view('site.change_answer',  compact('answer', 'lastTopic'));
+        $answer = Question::find($id);
+        return view('site.change_answer',  compact('answer'));
     }
 
     /**
@@ -83,14 +77,8 @@ class QuestionAnswerController extends Controller
     public function edit($id)
     {
         //
-        $question = [];
-        $result = Question::find($id);
-        $question['question'] = $result->question;
-        $question['author'] = $result->author_question;
-        $question['question_id'] = $id;
-        $lastTopic = $result->topic_id;
-
-        return view('site.change_question', compact('question', 'lastTopic'));
+        $question = Question::find($id);
+        return view('site.change_question', compact('question'));
     }
 
     /**
@@ -113,12 +101,12 @@ class QuestionAnswerController extends Controller
             'author_name' => 'required|max:255'
         ], $messages);
         if ($validator->fails()) {
-            return redirect()->route('formChangeQuestion', ['topic' => $id])->withErrors($validator);
+            return redirect()->route('question_answer.edit', ['topic' => $id])->withErrors($validator);
         }
         $question = Question::find($id);
         $question->update(['question' => $temp['question'], 'author_question' => $temp['author_name']]);
 
-        return redirect()->route('category', ['id' => $question->topic_id])->with('status', "Вопрос с id = $id изменен!");
+        return redirect()->route('category.show', ['id' => $question->topic_id])->with('status', "Вопрос с id = $id изменен!");
     }
 
     /**
