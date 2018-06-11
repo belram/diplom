@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Question;
 use App\Topic;
+use App\Status;
 use DB;
 use Validator;
 
@@ -50,7 +51,7 @@ class TopicCategoryController extends Controller
         if ($validator->fails()) {
             return redirect()->route('category.edit', ['id' => $temp['question_id'] ])->withErrors($validator);
         }
-        Question::sameId($temp['question_id'])->update(['topic_id' => $temp['topic']]);
+        Question::find($temp['question_id'])->update(['topic_id' => $temp['topic']]);
 
         return redirect()->route('category.show', ['id' => $temp['lastTopic']])->with('status', 'Тема вопроса изменена!');
     }
@@ -64,24 +65,12 @@ class TopicCategoryController extends Controller
     public function show($id)
     {
         //
-        $data = Topic::find($id)->questions()->get()->toArray();
-        $result = Topic::find($id);
-        foreach ($data as $key => $value) {
-            $data[$key]['topic'] = $result->topic;
-            $data[$key]['alias'] = $result->alias;
-            if (is_null( $value['answer'])) {
-                $data[$key]['answer'] = '';
-                $data[$key]['status'] = 'No answer';
-                $data[$key]['change_status'] = 'Answer';
-            }
-            if ( $value['status'] == 2) {
-                $data[$key]['status'] = 'Published';
-                $data[$key]['change_status'] = 'Hide';
-            } elseif ( $value['status'] == 3) {
-                $data[$key]['status'] = 'Hidden';
-                $data[$key]['change_status'] = 'Public';
-            }
-        }
+        $data = DB::table('topics')->join('questions', 'topics.id', '=', 'questions.topic_id')
+            ->join('statuses', 'questions.status_id', '=', 'statuses.id')
+            ->where('topic_id', $id)
+            ->select('questions.*', 'statuses.status', 'topics.topic')
+            ->orderBy('id')
+            ->get();
 
         return view('site.category', compact('data'));
     }
@@ -113,11 +102,11 @@ class TopicCategoryController extends Controller
         $temp = $request->except('_token');
         $question = Question::find($id);
         if ($temp['action'] == 'Hide') {
-            $question->update(['status' => 3]);
+            $question->update(['status_id' => 3]);
             return redirect()->route('category.show', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id скрыт!");
         }
         if ($temp['action'] == 'Public') {
-            $question->update(['status' => 2]);
+            $question->update(['status_id' => 2]);
             return redirect()->route('category.show', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id опубликован!");
         }
     }

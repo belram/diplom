@@ -21,12 +21,12 @@ class IndexController extends Controller
     {
         //
         $pages = DB::table('topics')->leftJoin('questions', 'topics.id', '=', 'questions.topic_id')
-                    ->where('status', 2)
+                    ->where('status_id', 2)
                     ->distinct()
                     ->get(['topic_id','topic', 'alias']);
         $data = [];
         foreach ($pages as $value) {
-            $temp = Topic::find($value->topic_id)->questions->where('status', 2);
+            $temp = Topic::find($value->topic_id)->questions->where('status_id', 2);
             if ($temp->count() > 0) {
                 $data[$value->alias] = $temp->values(['question', 'answer']);
             }
@@ -76,7 +76,6 @@ class IndexController extends Controller
                 'author_question' => $data['name'],
                 'author_email' => $data['email'],
                 'question_created_at' => date('Y-m-d H:i:s'),
-                'status' => 1,
                 'topic_id' => $topic[0]->id
             ]);
 

@@ -15,15 +15,9 @@ class Topic extends Model
         return $this->hasMany('App\Question');
     }
 
-	public function scopeSameId($query, $id)
-    {
-        return $query->where('id', $id);
-    }
-
 	public function scopeSameTopic($query, $topic)
     {
         return $query->where('topic', $topic);
     }
-
 
 }

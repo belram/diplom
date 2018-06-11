@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     //
-    protected $fillable = ['topic', 'alias', 'question', 'author_question', 'author_email', 'author_answer', 'status', 'answer_created_at', 'question_created_at', 'topic_id', 'answer'];
+    protected $fillable = ['topic', 'alias', 'question', 'author_question', 'author_email', 'author_answer', 'status_id', 'answer_created_at', 'question_created_at', 'topic_id', 'answer'];
 
 	public function topic () 
 	{
@@ -19,9 +19,9 @@ class Question extends Model
 		return $this->belongsTo('App\User');
 	}
 
-	public function scopeSameId($query, $id)
+    public function status () 
     {
-        return $query->where('id', $id);
+        return $this->belongsTo('App\Status');
     }
 
 	public function scopeSameTopicId($query, $id)
@@ -31,22 +31,22 @@ class Question extends Model
 
 	public function scopeWaitAnswer($query)
     {
-        return $query->where('status', 1);
+        return $query->where('status_id', 1);
     }
 
     public function scopePublished($query)
     {
-        return $query->where('status', 2);
+        return $query->where('status_id', 2);
     }
 
     public function scopeHidden($query)
     {
-        return $query->where('status', 3);
+        return $query->where('status_id', 3);
     }
 
     public function scopeTotalCount($query)
     {
-        return $query->where('status', '>', 0);
+        return $query->where('status_id', '>', 0);
     }
 
 }

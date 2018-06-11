@@ -22,8 +22,7 @@ class CreateTableQuestions extends Migration
             $table->dateTime('question_created_at')->nullable();
             $table->text('answer')->nullable();
             $table->dateTime('answer_created_at')->nullable();
-            $table->integer('status')->default(0);
-
+            
             $table->timestamps();
         });
     }

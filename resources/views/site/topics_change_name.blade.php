@@ -34,20 +34,16 @@
 			        </ul>
 			    </div>
 			@endif
-
-			@foreach($topic as $value)
-				<form style="margin-top: 20px" method="POST" action="{{ route('changes.update', ['id' => $value->id]) }}">
-					@method('PUT')
-					@csrf
-					<h4>Old Name: {{ ucwords($value->topic) }}</h4>
-					New name topic: <input id="topic"  type="text" name="topic" value="{{ old('topic') }}">
-					<br>
-					<br>
-					<input type="submit" name="save" value="Save">
-				</form>
-				<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('changes.index') }}">Back</a>
-			@endforeach
-
+			<form style="margin-top: 20px" method="POST" action="{{ route('changes.update', ['id' => $topic->id]) }}">
+				@method('PUT')
+				@csrf
+				<h4>Old Name: {{ ucwords($topic->topic) }}</h4>
+				New name topic: <input id="topic"  type="text" name="topic" value="{{ old('topic') }}">
+				<br>
+				<br>
+				<input type="submit" name="save" value="Save">
+			</form>
+			<a style="display: block; font-size: 15px; font-weight: bold; color: black; margin-top: 20px;" href="{{ route('changes.index') }}">Back</a>
 	@endif
 </div>
 @endsection

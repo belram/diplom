@@ -49,16 +49,5 @@ class TopicsSeeder extends Seeder
     		]
     	);
 
-
-
-
-
-
-
-
-
-
-
-
     }
 }

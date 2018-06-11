@@ -49,7 +49,7 @@ class AnswerController extends Controller
         if ($validator->fails()) {
             return redirect()->route('answer.edit', ['topic' =>  $request->id])->withErrors($validator)->withInput();
         }
-        $temp['status'] = ($temp['status'] == 'Save and hide') ? 3 : 2;
+        $temp['status_id'] = ($temp['status'] == 'Save and hide') ? 3 : 2;
         $temp['answer_created_at'] = date('Y-m-d H:i:s');
         $new_answer = Question::find($request->id);
         $new_answer->update($temp);

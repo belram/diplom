@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTopicsTable extends Migration
+class CreateTableTopics extends Migration
 {
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateTopicsTable extends Migration
 
             $table->string('topic',100);
             $table->string('alias',100);
-
+            
             $table->timestamps();
         });
     }

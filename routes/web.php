@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::resource('/', 'IndexController', ['except' => ['show', 'edit', 'update', 'destroy']]);
 Auth::routes();
 Route::group(['prefix'=>'admin','middleware'=>['auth']], function() {

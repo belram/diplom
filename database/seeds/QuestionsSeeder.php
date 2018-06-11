@@ -23,7 +23,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 1
     		],
 
@@ -35,7 +35,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:20",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 1
     		],
 
@@ -47,7 +47,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:21",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 2
     		],
 
@@ -59,7 +59,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 2
     		],
 
@@ -71,7 +71,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 3
     		],
 
@@ -83,7 +83,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 3
     		],
 
@@ -95,7 +95,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 4
     		],
 
@@ -107,7 +107,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 4
     		],
 
@@ -119,7 +119,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 5
     		],
 
@@ -131,7 +131,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 5
     		],
 
@@ -143,7 +143,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 6
     		],
 
@@ -155,7 +155,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 6
     		],
 
@@ -167,7 +167,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 6
     		],
 
@@ -179,7 +179,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 6
     		],
 
@@ -191,7 +191,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 1
     		],
 
@@ -203,7 +203,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 6
     		],
 
@@ -215,7 +215,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 6
     		],
 
@@ -227,7 +227,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 3
     		],
 
@@ -239,7 +239,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 4
     		],
 
@@ -251,7 +251,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 6
     		],
 
@@ -263,7 +263,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 1
     		],
 
@@ -275,7 +275,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 4
     		],
 
@@ -287,7 +287,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 1
     		],
 
@@ -299,7 +299,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 3
     		],
 
@@ -311,7 +311,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 1
     		],
 
@@ -323,7 +323,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 3
     		],
 
@@ -335,7 +335,7 @@ class QuestionsSeeder extends Seeder
 			    "question_created_at" => "2018-05-13 20:44:19",
 			    "answer" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae quidem blanditiis delectus corporis, possimus officia sint sequi ex tenetur id impedit est pariatur iure animi non a ratione reiciendis nihil sed consequatur atque repellendus fugit perspiciatis rerum et. Dolorum consequuntur fugit deleniti, soluta fuga nobis. Ducimus blanditiis velit sit iste delectus obcaecati debitis omnis, assumenda accusamus cumque perferendis eos aut quidem! Aut, totam rerum, cupiditate quae aperiam voluptas rem inventore quas, ex maxime culpa nam soluta labore at amet nihil laborum? Explicabo numquam, sit fugit, voluptatem autem atque quis quam voluptate fugiat earum rem hic, reprehenderit quaerat tempore at. Aperiam. hhh",
 			    "answer_created_at" => "2018-05-13 00:08:11",
-			    "status" => 2,
+			    "status_id" => 2,
 			    "topic_id" => 2
     		]
 

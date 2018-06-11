@@ -81,7 +81,7 @@ class TopicsController extends Controller
     public function show($id)
     {
         //
-        $topic = Topic::sameId($id)->get(['id', 'topic']);
+        $topic = Topic::find($id);
         return view('site.topics_change_name', compact('topic'));
     }
 
@@ -118,7 +118,7 @@ class TopicsController extends Controller
         if ($validator->fails()) {
             return redirect()->route('changes.show', ['id'=>$id])->withErrors($validator)->withInput();
         }
-        Topic::sameId($id)->update(['topic' => $data['topic'], 'alias' => mb_strtolower($data['topic'])]);
+        Topic::find($id)->update(['topic' => $data['topic'], 'alias' => mb_strtolower($data['topic'])]);
 
         return redirect()->route('changes.index')->with('status', 'Название темы обновлено!');
     }
@@ -133,7 +133,7 @@ class TopicsController extends Controller
     {
         //
         Question::sameTopicId($id)->delete();
-        Topic::sameId($id)->delete();
+        Topic::find($id)->delete();
         return redirect()->route('changes.index')->with('status', "Тема c id = $id удалена!");
     }
 }
