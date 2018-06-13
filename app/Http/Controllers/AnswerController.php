@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StoreAnswerRequest;
 use App\Question;
 use Auth;
-use Validator;
 
 class AnswerController extends Controller
 {
@@ -36,23 +35,15 @@ class AnswerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAnswerRequest $request)
     {
-        //
-        $temp = $request->except('_token', 'id');
-        $messages = [
-            'required'=>'Поле :attribute обязательно к заполнению'
-        ];
-        $validator = Validator::make($temp, [
-            'answer' => 'required'
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->route('answer.edit', ['topic' =>  $request->id])->withErrors($validator)->withInput();
-        }
-        $temp['status_id'] = ($temp['status'] == 'Save and hide') ? 3 : 2;
-        $temp['answer_created_at'] = date('Y-m-d H:i:s');
-        $new_answer = Question::find($request->id);
-        $new_answer->update($temp);
+        $validated = $request->validated();        
+        $validated['status_id'] = ($validated['status_id'] == 'Save and hide') ? 3 : 2;
+        $validated['answer_created_at'] = date('Y-m-d H:i:s');
+        $new_answer = Question::find($validated['id']);
+        unset($validated['id']);
+        $new_answer->update($validated);
+        
         return redirect()->route('category.show', ['topic' => $new_answer->topic_id])->with('status', 'Ваш ответ добавлен!');
     }
 

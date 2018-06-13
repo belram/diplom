@@ -46,9 +46,9 @@
 					<textarea id="answer" cols="100" rows="5" name="answer">{{ old('answer') }}</textarea>
 					</label>
 					<br>
-					<input type="submit" name="status" value="Save and hide">
+					<input type="submit" name="status_id" value="Save and hide">
 					<br>
-					<input type="submit" name="status" value="Save and public">
+					<input type="submit" name="status_id" value="Save and public">
 				</form>
 		</div>
 	@endif

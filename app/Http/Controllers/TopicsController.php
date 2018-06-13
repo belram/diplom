@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StoreNewTopicRequest;
+use App\Http\Requests\UpdateTopicNameRequest;
 use App\Question;
 use App\Topic;
-use Validator;
 
 class TopicsController extends Controller
 {
@@ -17,10 +17,10 @@ class TopicsController extends Controller
      */
     public function index()
     {
-        //
         $topics = Topic::get(['id','topic', 'alias']);
         $data = [];
         $i = 1;
+
         foreach ($topics as $value) {
             $data[$value->topic]['alias'] = $value->alias;
             $data[$value->topic]['wait'] = Question::sameTopicId($value->id)->waitAnswer()->count();
@@ -30,7 +30,6 @@ class TopicsController extends Controller
             $data[$value->topic]['i'] = $i++;
             $data[$value->topic]['id'] = $value->id;
         }
-
         return view('site.topics', compact('data'));
     }
 
@@ -51,24 +50,11 @@ class TopicsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreNewTopicRequest $request)
     {
-        //
-        $data = $request->except('_token', 'save');
-        $messages = [
-            'required'=>'Поле :attribute обязательно к заполнению',
-            'max'=>'Поле :attribute должно быть не более 100 символов',
-            'unique'=>'Поле :attribute должно быть уникальным'
-        ];
-        $validator = Validator::make($data, [
-            'topic' => 'required|max:100|unique:topics',
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->route('changes.create')->withErrors($validator)->withInput();
-        }
-        $data['alias'] = mb_strtolower($data['topic']);
-        Topic::create($data);
-
+        $validated = $request->validated();
+        $validated['alias'] = mb_strtolower($validated['topic']);
+        Topic::create($validated);
         return redirect()->route('changes.index')->with('status', "Новая тема $request->topic добавлена!");
     }
 
@@ -103,23 +89,10 @@ class TopicsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTopicNameRequest $request, $id)
     {
-        //
-        $messages = [
-            'required'=>'Поле :attribute обязательно к заполнению',
-            'max'=>'Поле :attribute должно быть не более 100 символов',
-            'unique'=>'Поле :attribute должно быть уникальным'
-        ];
-        $data = $request->except('_token', 'save');
-        $validator = Validator::make($data, [
-            'topic' => 'required|max:255|unique:topics',
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->route('changes.show', ['id'=>$id])->withErrors($validator)->withInput();
-        }
-        Topic::find($id)->update(['topic' => $data['topic'], 'alias' => mb_strtolower($data['topic'])]);
-
+        $validated = $request->validated();
+        Topic::find($id)->update(['topic' => $validated['topic'], 'alias' => mb_strtolower($validated['topic'])]);
         return redirect()->route('changes.index')->with('status', 'Название темы обновлено!');
     }
 
@@ -131,7 +104,6 @@ class TopicsController extends Controller
      */
     public function destroy($id)
     {
-        //
         Question::sameTopicId($id)->delete();
         Topic::find($id)->delete();
         return redirect()->route('changes.index')->with('status', "Тема c id = $id удалена!");

@@ -22,7 +22,7 @@
     </div>
 </div>
 <div>
-	@if(isset($data))
+	@if(isset($questions))
 		<table style="border: 1px solid black; border-collapse: collapse; margin-top: 15px">
 			<tr style="border: 1px solid black; border-collapse: collapse; padding: 5px">
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">ID</td>
@@ -34,11 +34,11 @@
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Delete</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Change status</td>
 			</tr>
-	        @foreach($data as $item)
+	        @foreach($questions as $key => $item)
 	        	<tr>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item->id }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			<a href="{{ route('category.edit', ['id' => $item->id ]) }}">{{ $item->topic }}</a>
+	        			<a href="{{ route('category.edit', ['id' => $item->id ]) }}">{{ $topic }}</a>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
 	        			<a href="{{ route('question_answer.edit', ['id' => $item->id ]) }}">{{ $item->question }}</a>
@@ -47,7 +47,7 @@
 	        			<a href="{{ route('question_answer.show', ['id' => $item->id ]) }}">{{ $item->answer }}</a>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item->answer_created_at }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item->status }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $statuses[$key] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
 	        			<form method="POST" action="{{ route('category.destroy', ['id' => $item->id ]) }}">
 	        				@method('DELETE')
@@ -57,14 +57,14 @@
 						</form>
 	        		</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
-	        			@if( $item->status == 'Published' || $item->status == 'Hidden' )
+	        			@if( $statuses[$key] == 'Published' || $statuses[$key] == 'Hidden' )
 		        			<form method="POST" action="{{ route('category.update', ['id' => $item->id ]) }}">
 		        				@method('PUT')
 								@csrf
 								<input type="hidden" name="topic" value="{{ $item->topic_id }}">
-								<input type="submit" name="action" value="{{ ($item->status == 'Published') ? 'Hide' : 'Public' }}">
+								<input type="submit" name="action" value="{{ ($statuses[$key] == 'Published') ? 'Hide' : 'Public' }}">
 							</form>
-						@elseif( $item->status == 'No answer' )
+						@elseif( $statuses[$key] == 'No answer' )
 							<a style="color: green;" href="{{ route('answer.edit', ['id' => $item->id ]) }}">Answer</a>
 						@endif
 	        		</td>

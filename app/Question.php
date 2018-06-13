@@ -49,4 +49,5 @@ class Question extends Model
         return $query->where('status_id', '>', 0);
     }
 
+
 }

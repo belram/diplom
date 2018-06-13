@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use App\Http\Requests\StoreNewAdminRequest;
+use App\Http\Requests\UpdateAdminPasswordRequest;
 use App\User;
 use Auth;
-use Validator;
-use DB;
-
 
 class AdminController extends Controller
 {
@@ -43,28 +41,11 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreNewAdminRequest $request)
     {
-        //
-        $data = $request->except('_token');
-        $messages = [
-            'required'=>'Поле :attribute обязательно к заполнению',
-            'email'=>'Поле :attribute должно соответствовать email адресу',
-            'max'=>'Значение поля :attribute должно быть меннее 255 символов',
-            'min'=>'Значение поля :attribute должно быть более 5 символов'
-        ];
-        $validator = Validator::make($data, [
-            'name' => 'required|max:255',
-            'login' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'required|min:5'
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->route('administrators.create')->withErrors($validator);
-        }
-        $data['password'] = Hash::make($data['password']);
-        User::create($data);
-
+        $validated = $request->validated();
+        $validated['password'] = Hash::make($validated['password']);
+        User::create($validated);
         return redirect()->route('administrators.index')->with('status', 'Администратор добавлен!');
     }
 
@@ -76,7 +57,6 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        //
         $data = User::find($id);
         return view('site.admin_change_password', compact('data'));
     }
@@ -99,22 +79,10 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateAdminPasswordRequest $request, $id)
     {
-        //
-        $data = $request->except('_token');
-        $messages = [
-            'required'=>'Поле :attribute обязательно к заполнению',
-            'min'=>'Значение поля :attribute должно быть более 5 символов'
-        ];
-        $validator = Validator::make($data, [
-            'password' => 'required|min:5'
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->route('administrators.show', ['id' => $id])->withErrors($validator);
-        }
-        User::find($id)->update(['password' => Hash::make($data['password'])]);
-
+        $validated = $request->validated();
+        User::find($id)->update(['password' => Hash::make($validated['password'])]);
         return redirect()->route('administrators.index')->with('status', 'Пароль изменен!');
     }
 

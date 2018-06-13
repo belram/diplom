@@ -35,7 +35,7 @@
 			@method('PUT')
 			@csrf
 			<label>Change author question:<br>
-				<textarea id="author_name" cols="8" rows="2" name="author_name">{{ $question->author_question }}</textarea>
+				<textarea id="author_name" cols="8" rows="2" name="author_question">{{ $question->author_question }}</textarea>
 			</label>
 			<br>
 			<label>Change question:<br>

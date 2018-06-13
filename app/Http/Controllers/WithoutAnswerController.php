@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateQuestionAutorWithoutAnswerRequest;
 use App\Question;
 use App\Topic;
 use DB;
-use Validator;
 
 class WithoutAnswerController extends Controller
 {
@@ -77,22 +78,10 @@ class WithoutAnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateQuestionAutorWithoutAnswerRequest $request, $id)
     {
-        //
-        $temp = $request->except('_method', '_token', 'save');
-        $messages = [
-            'required'=>'Поле :attribute обязательно к заполнению',
-            'maX'=>'Значение поля :attribute должно быть меннее 150 символов'
-        ];
-        $validator = Validator::make($temp, [
-            'question' => 'required',
-            'author_question' => 'required|max:150'
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->route('withoutAnswer.show', ['id' => $id])->withErrors($validator);
-        }
-        $new_question = Question::find($id)->update($temp);        
+        $validated = $request->validated();
+        $new_question = Question::find($id)->update($validated);        
         return redirect()->route('withoutAnswer.index')->with('status', "Вопрос с id = $id изменен!");
     }
 

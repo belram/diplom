@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StoreNewTopicForQuestionRequest;
 use App\Question;
 use App\Topic;
 use App\Status;
-use DB;
-use Validator;
 
 class TopicCategoryController extends Controller
 {
@@ -38,22 +36,12 @@ class TopicCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreNewTopicForQuestionRequest $request)
     {
-        //
-        $temp = $request->except('_token', 'save');
-        $messages = [
-            'required'=>'Поле :attribute обязательно к заполнению'
-        ];
-        $validator = Validator::make($temp, [
-            'topic' => 'required'
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->route('category.edit', ['id' => $temp['question_id'] ])->withErrors($validator);
-        }
-        Question::find($temp['question_id'])->update(['topic_id' => $temp['topic']]);
-
-        return redirect()->route('category.show', ['id' => $temp['lastTopic']])->with('status', 'Тема вопроса изменена!');
+        $validated = $request->validated();
+        Question::find($validated['question_id'])->update(['topic_id' => $validated['topic']]);
+        
+        return redirect()->route('category.show', ['id' => $validated['lastTopic']])->with('status', 'Тема вопроса изменена!');
     }
 
     /**
@@ -64,15 +52,17 @@ class TopicCategoryController extends Controller
      */
     public function show($id)
     {
-        //
-        $data = DB::table('topics')->join('questions', 'topics.id', '=', 'questions.topic_id')
-            ->join('statuses', 'questions.status_id', '=', 'statuses.id')
-            ->where('topic_id', $id)
-            ->select('questions.*', 'statuses.status', 'topics.topic')
-            ->orderBy('id')
-            ->get();
-
-        return view('site.category', compact('data'));
+        $questions = Question::with('topic', 'status')->sameTopicId($id)->get();
+        $topic = null;
+        $statuses = [];
+        if (count($questions) > 0) {
+            $topic = $questions[0]->topic->topic;
+            foreach ($questions as $question) {
+                $statuses[] = $question->status->status;
+            }
+        }
+        
+        return view('site.category', compact('questions', 'topic', 'statuses'));
     }
 
     /**

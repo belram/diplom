@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StoreNewQuestionRequest;
 use App\Question;
 use App\Topic;
 use DB;
-use Validator;
 
 class IndexController extends Controller
 {
@@ -19,7 +18,6 @@ class IndexController extends Controller
      */
     public function index()
     {
-        //
         $pages = DB::table('topics')->leftJoin('questions', 'topics.id', '=', 'questions.topic_id')
                     ->where('status_id', 2)
                     ->distinct()
@@ -52,29 +50,14 @@ class IndexController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreNewQuestionRequest $request)
     {
-        //
-        $messages = [
-            'required'=>'Поле :attribute обязательно к заполнению',
-            'email'=>'Поле :attribute должно соответствовать email адресу',
-            'maX'=>'Значение поля :attribute должно быть меннее 255 символов'
-        ];
-        $data = $request->except('_token', 'save');
-        $validator = Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email',
-            'topic' => 'required',
-            'question' => 'required'
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->route('create')->withErrors($validator)->withInput();
-        }
-        $topic = Topic::sameTopic($data['topic'])->get(['id']);
+        $validated = $request->validated();
+        $topic = Topic::sameTopic($validated['topic'])->get(['id']);
         Question::create([
-                'question' => $data['question'],
-                'author_question' => $data['name'],
-                'author_email' => $data['email'],
+                'question' => $validated['question'],
+                'author_question' => $validated['name'],
+                'author_email' => $validated['email'],
                 'question_created_at' => date('Y-m-d H:i:s'),
                 'topic_id' => $topic[0]->id
             ]);
