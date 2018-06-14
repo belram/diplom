@@ -11,7 +11,8 @@ use App\Topic;
 class TopicsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Гдавная страница управления темами. Изменение названия тем, добавление новой темы,
+     * удаление темы и всех вопросов в ней
      *
      * @return \Illuminate\Http\Response
      */
@@ -34,32 +35,29 @@ class TopicsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Отображение формы добавления новой темы
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
         return view('site.topics_add');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохранение новой темы
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNewTopicRequest $request)
     {
-        $validated = $request->validated();
-        $validated['alias'] = mb_strtolower($validated['topic']);
-        Topic::create($validated);
+        Topic::create(['topic' => $request->topic, 'alias' => mb_strtolower($request->topic)]);
         return redirect()->route('changes.index')->with('status', "Новая тема $request->topic добавлена!");
     }
 
     /**
-     * Display the specified resource.
+     * Форма изенения названия темы.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -83,7 +81,7 @@ class TopicsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Сохранение нового названия для ранее существовавшей темы.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -91,13 +89,12 @@ class TopicsController extends Controller
      */
     public function update(UpdateTopicNameRequest $request, $id)
     {
-        $validated = $request->validated();
-        Topic::find($id)->update(['topic' => $validated['topic'], 'alias' => mb_strtolower($validated['topic'])]);
+        Topic::find($id)->update(['topic' => $request->topic, 'alias' => mb_strtolower($request->topic)]);
         return redirect()->route('changes.index')->with('status', 'Название темы обновлено!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаление темы и всех вопросов в ней.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

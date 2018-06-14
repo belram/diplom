@@ -6,35 +6,36 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreNewQuestionRequest;
 use App\Question;
 use App\Topic;
-use DB;
 
 class IndexController extends Controller
 {
 
     /**
-     * Display a listing of the resource.
+     * Отоброжение заглавной страницы сайта
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $pages = DB::table('topics')->leftJoin('questions', 'topics.id', '=', 'questions.topic_id')
-                    ->where('status_id', 2)
-                    ->distinct()
-                    ->get(['topic_id','topic', 'alias']);
-        $data = [];
-        foreach ($pages as $value) {
-            $temp = Topic::find($value->topic_id)->questions->where('status_id', 2);
-            if ($temp->count() > 0) {
-                $data[$value->alias] = $temp->values(['question', 'answer']);
-            }
+        $topics_id = Question::with('topic')->published()->distinct()->get(['topic_id']);
+        $topics = [];
+        foreach ($topics_id as $key => $value) {
+            $topics[] = $value->topic;
         }
-
-        return view('site.index', compact('pages', 'data'));
+        $questions = [];
+        $temp = Question::published()->get();
+        foreach ($topics as $topic) {
+            foreach ($temp as $question) {
+                if ($topic->id == $question->topic_id) {
+                    $questions[$topic->alias][] = $question;
+                }    
+            }   
+        }
+        return view('site.index', compact('topics', 'questions'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Форма для добавления вопроса
      *
      * @return \Illuminate\Http\Response
      */
@@ -45,23 +46,21 @@ class IndexController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *Сохранение нового вопроса
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNewQuestionRequest $request)
     {
-        $validated = $request->validated();
-        $topic = Topic::sameTopic($validated['topic'])->get(['id']);
+        $topic = Topic::sameTopic($request->topic)->get(['id']);
         Question::create([
-                'question' => $validated['question'],
-                'author_question' => $validated['name'],
-                'author_email' => $validated['email'],
+                'question' => $request->question,
+                'author_question' => $request->name,
+                'author_email' => $request->email,
                 'question_created_at' => date('Y-m-d H:i:s'),
                 'topic_id' => $topic[0]->id
             ]);
-
         return redirect()->route('index')->with('status', 'Ваш вопрос добавлен!');
     }
 

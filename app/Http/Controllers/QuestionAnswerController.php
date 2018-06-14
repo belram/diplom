@@ -31,22 +31,20 @@ class QuestionAnswerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохранение новой редакции ответа.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNewAnswerRequest $request)
     {
-        $validated = $request->validated();
-        $new_answer = Question::find($validated['id']);
-        unset($validated['id']);
-        $new_answer->update($validated);
+        $new_answer = Question::find($request->id);
+        $new_answer->update(['answer' => $request->answer]);
         return redirect()->route('category.show', ['id' => $new_answer->topic_id])->with('status', "Ответ с id = $new_answer->id изменен!");
     }
 
     /**
-     * Display the specified resource.
+     * Форма изменения редакции ответа.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -59,7 +57,7 @@ class QuestionAnswerController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Форма изменения редакции вопроса и автора вопроса.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -71,7 +69,7 @@ class QuestionAnswerController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Сохранение новой редакции вопроса и имени автора вопроса
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -79,9 +77,8 @@ class QuestionAnswerController extends Controller
      */
     public function update(UpdateQuestionRequest $request, $id)
     {
-        $validated = $request->validated();
         $question = Question::find($id);
-        $question->update($validated);
+        $question->update(['question' => $request->question, 'author_question' => $request->author_question]);
         return redirect()->route('category.show', ['id' => $question->topic_id])->with('status', "Вопрос с id = $id изменен!");
     }
 

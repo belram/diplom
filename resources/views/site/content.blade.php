@@ -1,7 +1,7 @@
-@if(isset($data))
-        @foreach($data as $k=>$item)
+@if(isset($questions))
+        @foreach($questions as $k=>$item)
             <ul id="{{ $k }}" class="cd-faq-group">
-                <li class="cd-faq-title"><h2>{{ ucwords($k) }}</h2></li>
+                <li class="cd-faq-title"><h2>{{ $k }}</h2></li>
                 @foreach($item as $line)
                     <li>
                         <a class="cd-faq-trigger" href="#0">{{ $line->question }}</a>

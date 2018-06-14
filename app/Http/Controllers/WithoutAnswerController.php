@@ -6,24 +6,23 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateQuestionAutorWithoutAnswerRequest;
 use App\Question;
 use App\Topic;
-use DB;
 
 class WithoutAnswerController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Блок просмотра всех вопросов без ответа.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         //
-        $data = DB::table('topics')->leftJoin('questions', 'topics.id', '=', 'questions.topic_id')
-            ->where([['answer', NULL], ['question', '!=', NULL]])
-            ->orderBy('question_created_at')
-            ->get(['questions.id','topic', 'question', 'question_created_at']);
-
-        return view('site.without_answer', compact('data'));
+        $data = Question::with('topic')->waitAnswer()->get();
+        $topics = [];
+        foreach ($data as $key => $question) {
+            $topics[] = $question->topic->topic;
+        }
+        return view('site.without_answer', compact('data', 'topics'));
     }
 
     /**
@@ -48,7 +47,7 @@ class WithoutAnswerController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Форма для изменения вопроса и имени автора вопроса.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -72,7 +71,7 @@ class WithoutAnswerController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Сохранение новой редакции вопроса и(или) имени автора вопроса.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -80,13 +79,15 @@ class WithoutAnswerController extends Controller
      */
     public function update(UpdateQuestionAutorWithoutAnswerRequest $request, $id)
     {
-        $validated = $request->validated();
-        $new_question = Question::find($id)->update($validated);        
+        Question::find($id)->update([
+            'question' => $request->question,
+            'author_question' => $request->author_question
+        ]);        
         return redirect()->route('withoutAnswer.index')->with('status', "Вопрос с id = $id изменен!");
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаление вопроса.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -94,7 +95,7 @@ class WithoutAnswerController extends Controller
     public function destroy($id)
     {
         //
-        $result = Question::find($id)->delete();
+        Question::find($id)->delete();
         return redirect()->route('withoutAnswer.index')->with('status', "Вопрос с id = $id удален!");
     }
 }

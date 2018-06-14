@@ -12,7 +12,7 @@ use Auth;
 class AdminController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Отоброжение страницы управления администраторами
      *
      * @return \Illuminate\Http\Response
      */
@@ -25,7 +25,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Форма добавления нового администратора.
      *
      * @return \Illuminate\Http\Response
      */
@@ -36,21 +36,24 @@ class AdminController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохрание нового администратора.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNewAdminRequest $request)
     {
-        $validated = $request->validated();
-        $validated['password'] = Hash::make($validated['password']);
-        User::create($validated);
+        User::create([
+              'name' => $request->name,
+              'login' => $request->login,
+              'email' => $request->email,
+              'password' => Hash::make($request->password)
+        ]);
         return redirect()->route('administrators.index')->with('status', 'Администратор добавлен!');
     }
 
     /**
-     * Display the specified resource.
+     * Форма изменения пароля определенного администратора
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -73,7 +76,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Сохранение нового пороля для определенного администратора.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -81,13 +84,12 @@ class AdminController extends Controller
      */
     public function update(UpdateAdminPasswordRequest $request, $id)
     {
-        $validated = $request->validated();
-        User::find($id)->update(['password' => Hash::make($validated['password'])]);
+        User::find($id)->update(['password' => Hash::make($request->password)]);
         return redirect()->route('administrators.index')->with('status', 'Пароль изменен!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаление администратора.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

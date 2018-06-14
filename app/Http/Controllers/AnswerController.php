@@ -35,16 +35,9 @@ class AnswerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAnswerRequest $request)
+    public function store(Request $request)
     {
-        $validated = $request->validated();        
-        $validated['status_id'] = ($validated['status_id'] == 'Save and hide') ? 3 : 2;
-        $validated['answer_created_at'] = date('Y-m-d H:i:s');
-        $new_answer = Question::find($validated['id']);
-        unset($validated['id']);
-        $new_answer->update($validated);
-        
-        return redirect()->route('category.show', ['topic' => $new_answer->topic_id])->with('status', 'Ваш ответ добавлен!');
+
     }
 
     /**
@@ -59,7 +52,7 @@ class AnswerController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Форма для добавления нового ответа.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -72,15 +65,21 @@ class AnswerController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Сохранение нового ответа.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreAnswerRequest $request, $question)
     {
-        //
+        $data = [];
+        $data['status_id'] = ($request->status_id == 'Save and hide') ? 3 : 2;
+        $data['answer_created_at'] = date('Y-m-d H:i:s');
+        $data['answer'] = $request->answer;
+        $new_answer = Question::find($question);
+        $new_answer->update($data);
+        return redirect()->route('category.show', ['topic' => $new_answer->topic_id])->with('status', 'Ваш ответ добавлен!');
     }
 
     /**

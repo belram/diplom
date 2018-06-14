@@ -31,10 +31,10 @@
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Question Made</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Delete</td>
 			</tr>
-	        @foreach($data as $question)
+	        @foreach($data as $key => $question)
 	        	<tr>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->id }}</td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->topic }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $topics[$key] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('withoutAnswer.show', ['id' => $question->id]) }}">{{ $question->question }}</a></td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->question_created_at }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">

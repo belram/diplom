@@ -17,7 +17,7 @@ Route::group(['prefix'=>'admin','middleware'=>['auth']], function() {
 	Route::resource('/changes', 'TopicsController', ['except' => ['edit']]);
 	Route::resource('/category', 'TopicCategoryController', ['except' => ['index', 'create']]);
 	Route::resource('/question_answer', 'QuestionAnswerController', ['except' => ['index', 'create', 'destroy']]);
-	Route::resource('/answer', 'AnswerController', ['only' => ['edit', 'store']]);
+	Route::resource('/answer', 'AnswerController', ['only' => ['edit', 'update']]);
 	Route::resource('/administrators', 'AdminController', ['except' => ['edit']]);
 	Route::resource('/withoutAnswer', 'WithoutAnswerController', ['except' => ['store', 'create', 'edit']]);
 });

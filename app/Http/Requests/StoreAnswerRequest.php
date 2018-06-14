@@ -25,7 +25,6 @@ class StoreAnswerRequest extends FormRequest
     {
         return [
             'answer' => 'required',
-            'id' => 'required',
             'status_id' => 'required'
         ];
     }

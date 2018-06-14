@@ -1,7 +1,7 @@
-@if(isset($pages))
+@if(isset($topics))
     <ul class="cd-faq-categories">
-        @foreach($pages as $k=>$item)
-            <li><a {{ ($k ==0) ? 'class="selected"' : ''}} href="#{{ $item->alias }}">{{ ucwords($item->topic) }}</a></li>
+        @foreach($topics as $k=> $item)
+            <li><a {{ ($k ==0) ? 'class="selected"' : ''}} href="#{{ $item->alias }}">{{ $item->topic }}</a></li>
         @endforeach
     </ul>
 @endif

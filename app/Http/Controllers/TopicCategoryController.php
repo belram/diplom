@@ -31,21 +31,19 @@ class TopicCategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохранение изменения темы для вопроса
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNewTopicForQuestionRequest $request)
     {
-        $validated = $request->validated();
-        Question::find($validated['question_id'])->update(['topic_id' => $validated['topic']]);
-        
-        return redirect()->route('category.show', ['id' => $validated['lastTopic']])->with('status', 'Тема вопроса изменена!');
+        Question::find($request->question_id)->update(['topic_id' => $request->topic]);
+        return redirect()->route('category.show', ['id' => $request->lastTopic])->with('status', 'Тема вопроса изменена!');
     }
 
     /**
-     * Display the specified resource.
+     * Отоброжение страницы управления информацией по определенной теме.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -61,26 +59,24 @@ class TopicCategoryController extends Controller
                 $statuses[] = $question->status->status;
             }
         }
-        
         return view('site.category', compact('questions', 'topic', 'statuses'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Форма для изменения темы для вопроса
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
         $topics = Topic::get(['id','topic']);
         $question = Question::find($id);
         return view('site.change_topic', compact('topics', 'question'));
     }
 
     /**
-     * Update the specified resource in storage.
+     *Действие по изменению статуса - публикуем или скрываем вопрос.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -88,21 +84,19 @@ class TopicCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $temp = $request->except('_token');
         $question = Question::find($id);
-        if ($temp['action'] == 'Hide') {
+        if ($request->action == 'Hide') {
             $question->update(['status_id' => 3]);
-            return redirect()->route('category.show', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id скрыт!");
+            return redirect()->route('category.show', ['topic' => $request->topic])->with('status', "Вопрос с id = $id скрыт!");
         }
-        if ($temp['action'] == 'Public') {
+        if ($request->action == 'Public') {
             $question->update(['status_id' => 2]);
-            return redirect()->route('category.show', ['topic'=>$temp['topic']])->with('status', "Вопрос с id = $id опубликован!");
+            return redirect()->route('category.show', ['topic' => $request->topic])->with('status', "Вопрос с id = $id опубликован!");
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаление вопроса.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

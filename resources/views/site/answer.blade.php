@@ -39,9 +39,9 @@
 			<p style="margin: 10px 0px;">Question: <span style="color: blue;">{{ $question->question }}</span></p>
 		</div>
 		<div>
-				<form method="POST" action="{{ route('answer.store') }}">
+				<form method="POST" action="{{ route('answer.update', $question) }}">
 					@csrf
-					<input type="hidden" name="id" value="{{ $question->id }}">
+					@method('PUT')
 					<label>Your answer:<br>
 					<textarea id="answer" cols="100" rows="5" name="answer">{{ old('answer') }}</textarea>
 					</label>
