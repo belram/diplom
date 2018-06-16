@@ -26,7 +26,7 @@ class StoreNewQuestionRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'email' => 'required|email',
-            'topic' => 'required',
+            'topic_id' => 'required',
             'question' => 'required'
         ];
     }

@@ -18,18 +18,25 @@ class TopicsController extends Controller
      */
     public function index()
     {
-        $topics = Topic::get(['id','topic', 'alias']);
+        $topics = Topic::withCount([
+            'questions', 
+            'questions as wait_questions_count' => function ($query) {
+                $query->where('status_id', 1);
+            },
+            'questions as published_questions_count' => function ($query) {
+                $query->where('status_id', 2);
+            },
+            'questions as hidden_questions_count' => function ($query) {
+                $query->where('status_id', 3);
+            }
+        ])->get();
         $data = [];
-        $i = 1;
-
-        foreach ($topics as $value) {
-            $data[$value->topic]['alias'] = $value->alias;
-            $data[$value->topic]['wait'] = Question::sameTopicId($value->id)->waitAnswer()->count();
-            $data[$value->topic]['published'] = Question::sameTopicId($value->id)->published()->count();
-            $data[$value->topic]['hidden'] = Question::sameTopicId($value->id)->hidden()->count();
-            $data[$value->topic]['total'] = Question::sameTopicId($value->id)->totalCount()->count();
-            $data[$value->topic]['i'] = $i++;
-            $data[$value->topic]['id'] = $value->id;
+        foreach ($topics as $key => $topic) {
+            $data[$topic->topic]['wait'] = $topic->wait_questions_count;
+            $data[$topic->topic]['published'] = $topic->published_questions_count;
+            $data[$topic->topic]['hidden'] = $topic->hidden_questions_count;
+            $data[$topic->topic]['total'] = $topic->questions_count;
+            $data[$topic->topic]['id'] = $topic->id;
         }
         return view('site.topics', compact('data'));
     }

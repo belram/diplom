@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAnswerRequest;
+use Carbon\Carbon;
 use App\Question;
 use Auth;
 
@@ -75,7 +76,7 @@ class AnswerController extends Controller
     {
         $data = [];
         $data['status_id'] = ($request->status_id == 'Save and hide') ? 3 : 2;
-        $data['answer_created_at'] = date('Y-m-d H:i:s');
+        $data['answer_created_at'] = Carbon::now();
         $data['answer'] = $request->answer;
         $new_answer = Question::find($question);
         $new_answer->update($data);

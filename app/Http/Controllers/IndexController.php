@@ -41,7 +41,7 @@ class IndexController extends Controller
      */
     public function create()
     {
-        $topics = Topic::get(['topic']);
+        $topics = Topic::get();
         return view('site.add_question', compact('topics'));
     }
 
@@ -53,14 +53,12 @@ class IndexController extends Controller
      */
     public function store(StoreNewQuestionRequest $request)
     {
-        $topic = Topic::sameTopic($request->topic)->get(['id']);
         Question::create([
                 'question' => $request->question,
                 'author_question' => $request->name,
                 'author_email' => $request->email,
-                'question_created_at' => date('Y-m-d H:i:s'),
-                'topic_id' => $topic[0]->id
-            ]);
+                'topic_id' => $request->topic_id
+        ]);
         return redirect()->route('index')->with('status', 'Ваш вопрос добавлен!');
     }
 

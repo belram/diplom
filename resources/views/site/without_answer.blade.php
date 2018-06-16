@@ -36,7 +36,7 @@
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->id }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $topics[$key] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('withoutAnswer.show', ['id' => $question->id]) }}">{{ $question->question }}</a></td>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->question_created_at }}</td>
+	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $question->created_at }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">
 						<form method="POST" action="{{ route('withoutAnswer.destroy', ['id' => $question->id ]) }}">
 							@method('DELETE')

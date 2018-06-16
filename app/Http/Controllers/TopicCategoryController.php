@@ -51,7 +51,7 @@ class TopicCategoryController extends Controller
     public function show($id)
     {
         $questions = Question::with('topic', 'status')->sameTopicId($id)->get();
-        $topic = null;
+        $topic;
         $statuses = [];
         if (count($questions) > 0) {
             $topic = $questions[0]->topic->topic;
@@ -87,12 +87,11 @@ class TopicCategoryController extends Controller
         $question = Question::find($id);
         if ($request->action == 'Hide') {
             $question->update(['status_id' => 3]);
-            return redirect()->route('category.show', ['topic' => $request->topic])->with('status', "Вопрос с id = $id скрыт!");
         }
         if ($request->action == 'Public') {
             $question->update(['status_id' => 2]);
-            return redirect()->route('category.show', ['topic' => $request->topic])->with('status', "Вопрос с id = $id опубликован!");
         }
+        return redirect()->route('category.show', ['topic' => $request->topic])->with('status', "Статус вопроса с id = $id изменен!");
     }
 
     /**

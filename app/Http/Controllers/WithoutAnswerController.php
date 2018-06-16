@@ -17,7 +17,7 @@ class WithoutAnswerController extends Controller
     public function index()
     {
         //
-        $data = Question::with('topic')->waitAnswer()->get();
+        $data = Question::with('topic')->waitAnswer()->orderBy('created_at')->get();
         $topics = [];
         foreach ($data as $key => $question) {
             $topics[] = $question->topic->topic;

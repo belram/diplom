@@ -25,7 +25,6 @@
 	@if(isset($data))
 		<table style="border: 1px solid black; border-collapse: collapse; margin-top: 15px">
 			<tr style="border: 1px solid black; border-collapse: collapse; padding: 5px">
-				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">N</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Topic</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Change TopicName</td>
 				<td style="border: 1px solid black; border-collapse: collapse; padding: 5px">Without Answer</td>
@@ -36,7 +35,6 @@
 			</tr>
 	        @foreach($data as $topic=>$item)
 	        	<tr>
-	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['i'] }}</td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('category.show', ['id' => $item['id']]) }}">{{ $topic }}</a></td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;"><a href="{{ route('changes.show', ['id' => $item['id'] ]) }}">Change</a></td>
 	        		<td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{ $item['wait'] }}</td>
