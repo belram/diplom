@@ -85,12 +85,7 @@ class TopicCategoryController extends Controller
     public function update(Request $request, $id)
     {
         $question = Question::find($id);
-        if ($request->action == 'Hide') {
-            $question->update(['status_id' => 3]);
-        }
-        if ($request->action == 'Public') {
-            $question->update(['status_id' => 2]);
-        }
+        $question->update(['status_id' => ($request->action == 'Hide') ? 3 : 2]);
         return redirect()->route('category.show', ['topic' => $request->topic])->with('status', "Статус вопроса с id = $id изменен!");
     }
 
